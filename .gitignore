@@ -1,4 +1,8 @@
-### BEING VisualStudioCode.gitignore
+### BEGIN Specflow
+*.feature.cs
+### END Specflow
+
+### BEGIN VisualStudioCode.gitignore
 
 .vscode/*
 !.vscode/settings.json
