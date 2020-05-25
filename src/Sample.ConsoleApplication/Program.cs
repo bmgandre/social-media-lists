@@ -4,6 +4,7 @@ using Nest;
 using SocialMediaLists.Application.Contracts.Posts.Models;
 using SocialMediaLists.Application.Posts.Queries;
 using SocialMediaLists.Domain;
+using SocialMediaLists.Persistence.ElasticSearch.Posts.Repositories;
 using System;
 using System.Linq;
 using System.Text;
@@ -35,7 +36,8 @@ namespace Sample.ConsoleApplication
             }, idx => idx.Index(nameof(Post).ToLower())
             );
 
-            var postQuery = new PostQuery(client);
+            var postRepository = new EsReadPostRepository(client);
+            var postQuery = new PostQuery(postRepository);
             var filter = new PostFilter
             {
                 DateRange = new DateRangeModel

@@ -1,4 +1,6 @@
 @UnitTests
+@Persistence.ElasticSearch
+@Repository
 @Posts
 
 Feature: PostQuery

@@ -1,23 +1,23 @@
 using Moq;
 using Nest;
 using SocialMediaLists.Application.Contracts.Posts.Models;
-using SocialMediaLists.Application.Posts.Queries;
 using SocialMediaLists.Domain;
+using SocialMediaLists.Persistence.ElasticSearch.Posts.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Threading;
 using TechTalk.SpecFlow;
 
-namespace SocialMediaLists.Tests.Unit.Application.Posts.Queries.UnitTests
+namespace SocialMediaLists.Tests.Unit.Persistence.ElasticSearch.Posts.Repositories
 {
     [Binding]
     public class PostQueryTests
     {
-        private ScenarioContext _scenarioContext;
+        private readonly ScenarioContext _scenarioContext;
+        private readonly EsReadPostRepository _esReadPostRepository;
+        private readonly Mock<IElasticClient> _mockElasticClient;
         private PostFilter _postFilter;
-        private Mock<PostQuery> _mockPostQuery;
-        private Mock<IElasticClient> _mockElasticClient;
-
+        
         public PostQueryTests(ScenarioContext scenarioContext)
         {
             _scenarioContext = scenarioContext;
@@ -30,7 +30,7 @@ namespace SocialMediaLists.Tests.Unit.Application.Posts.Queries.UnitTests
                 .Setup(x => x.SearchAsync<Post>(It.IsAny<SearchRequest>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(mockSearchResponse.Object);
 
-            _mockPostQuery = new Mock<PostQuery>(_mockElasticClient.Object);
+            _esReadPostRepository = new EsReadPostRepository(_mockElasticClient.Object);
         }
 
         [Given(@"I have a request for searching posts")]
@@ -49,7 +49,7 @@ namespace SocialMediaLists.Tests.Unit.Application.Posts.Queries.UnitTests
         {
             try
             {
-                await _mockPostQuery.Object.SearchAsync(_postFilter);
+                await _esReadPostRepository.SearchAsync(_postFilter);
             }
             catch (Exception ex)
             {

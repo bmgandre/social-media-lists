@@ -2,7 +2,7 @@ using Nest;
 using SocialMediaLists.Application.Contracts.Posts.Models;
 using SocialMediaLists.Domain;
 
-namespace Application.Posts.Queries
+namespace SocialMediaLists.Persistence.ElasticSearch.Posts.Repositories
 {
     public static class QueryContainerExtensions
     {
