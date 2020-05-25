@@ -1,6 +1,6 @@
+using SocialMediaLists.Application.Contracts.Posts.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using SocialMediaLists.Application.Contracts.Posts.Models;
 
 namespace SocialMediaLists.Application.Contracts.Posts.Queries
 {

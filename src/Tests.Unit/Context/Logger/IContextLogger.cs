@@ -1,5 +1,4 @@
 using Serilog;
-using Serilog.Sinks.SystemConsole.Themes;
 
 namespace SocialMediaLists.Tests.Unit.Context.Logger
 {

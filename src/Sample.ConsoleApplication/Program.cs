@@ -1,24 +1,23 @@
-﻿using System;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Application.Contracts.Common.Models;
+﻿using Application.Contracts.Common.Models;
 using Elasticsearch.Net;
 using Nest;
 using SocialMediaLists.Application.Contracts.Posts.Models;
 using SocialMediaLists.Application.Posts.Queries;
 using SocialMediaLists.Domain;
+using System;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using TestEnvironment.Docker;
 using TestEnvironment.Docker.Containers.Elasticsearch;
 
 namespace Sample.ConsoleApplication
 {
-    class Program
+    internal class Program
     {
-        static async Task Main(string[] args)
+        private static async Task Main(string[] args)
         {
             Console.WriteLine("Start");
-
 
             var client = GetElasticClient();
             await client.Indices.CreateAsync(nameof(Post).ToLower(), c => c

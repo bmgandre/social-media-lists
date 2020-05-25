@@ -1,14 +1,12 @@
-using SocialMediaLists.Application.Contracts.Posts.Models;
-using TechTalk.SpecFlow;
 using Moq;
-using System;
-using FluentAssertions;
-using SocialMediaLists.Application.Posts.Queries;
 using Nest;
+using SocialMediaLists.Application.Contracts.Posts.Models;
+using SocialMediaLists.Application.Posts.Queries;
 using SocialMediaLists.Domain;
+using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Threading;
+using TechTalk.SpecFlow;
 
 namespace SocialMediaLists.Tests.Unit.Application.Posts.Queries.UnitTests
 {

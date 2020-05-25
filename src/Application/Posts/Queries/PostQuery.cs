@@ -1,11 +1,11 @@
-using System.Collections.Generic;
+using Application.Posts.Queries;
+using Nest;
 using SocialMediaLists.Application.Contracts.Posts.Models;
 using SocialMediaLists.Application.Contracts.Posts.Queries;
-using System.Threading.Tasks;
-using Nest;
-using Application.Posts.Queries;
 using SocialMediaLists.Domain;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SocialMediaLists.Application.Posts.Queries
 {
@@ -28,7 +28,8 @@ namespace SocialMediaLists.Application.Posts.Queries
                 Query = query
             };
             var result = await _elasticClient.SearchAsync<Post>(searchRequest);
-            return result.Documents.Select(x => new PostModel {
+            return result.Documents.Select(x => new PostModel
+            {
                 Date = x.Date,
                 Content = x.Content,
                 Link = x.Link,

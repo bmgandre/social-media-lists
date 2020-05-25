@@ -1,5 +1,5 @@
-using System;
 using SocialMediaLists.Tests.Unit.Context.Logger;
+using System;
 using TechTalk.SpecFlow;
 
 namespace SocialMediaLists.Tests.Unit.Hooks
@@ -18,7 +18,7 @@ namespace SocialMediaLists.Tests.Unit.Hooks
         }
 
         [AfterScenario]
-        public void LogException() 
+        public void LogException()
         {
             if (_scenarioContext.ContainsKey("Exception"))
             {

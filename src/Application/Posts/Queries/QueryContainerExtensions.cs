@@ -6,7 +6,7 @@ namespace Application.Posts.Queries
 {
     public static class QueryContainerExtensions
     {
-        public static  QueryContainer CreateQuery(this PostFilter filter) 
+        public static QueryContainer CreateQuery(this PostFilter filter)
         {
             return new QueryContainer()
                 .AddTextualFilterIfNotEmpty(filter)
