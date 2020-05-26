@@ -4,6 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>8.0</LangVersion>
     <RootNamespace>SocialMediaLists.Persistence.ElasticSearch</RootNamespace>
+    <AssemblyName>SocialMediaLists.Persistence.ElasticSearch</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>

@@ -1,4 +1,4 @@
-using Application.Contracts.Common.Models;
+using SocialMediaLists.Application.Contracts.Common.Models;
 
 namespace SocialMediaLists.Application.Contracts.Posts.Models
 {

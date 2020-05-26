@@ -1,4 +1,4 @@
-namespace Application.Contracts.Common.Models
+namespace SocialMediaLists.Application.Contracts.Common.Models
 {
     public class PageModel
     {

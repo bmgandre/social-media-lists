@@ -1,5 +1,5 @@
-﻿using Application.Contracts.Common.Models;
-using FluentAssertions;
+﻿using FluentAssertions;
+using SocialMediaLists.Application.Contracts.Common.Models;
 using SocialMediaLists.Application.Contracts.Common.Validators;
 using SocialMediaLists.Application.Contracts.Posts.Models;
 using SocialMediaLists.Application.Posts.Validators;

@@ -5,6 +5,7 @@
     <LangVersion>8.0</LangVersion>
     <IsPackable>false</IsPackable>
     <RootNamespace>SocialMediaLists.Tests.Unit</RootNamespace>
+    <AssemblyName>SocialMediaLists.Tests.Unit</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>

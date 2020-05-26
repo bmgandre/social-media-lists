@@ -1,6 +1,6 @@
-﻿using Application.Contracts.Common.Models;
-using Elasticsearch.Net;
+﻿using Elasticsearch.Net;
 using Nest;
+using SocialMediaLists.Application.Contracts.Common.Models;
 using SocialMediaLists.Application.Contracts.Posts.Models;
 using SocialMediaLists.Application.Posts.Queries;
 using SocialMediaLists.Domain;
@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 using TestEnvironment.Docker;
 using TestEnvironment.Docker.Containers.Elasticsearch;
 
-namespace Sample.ConsoleApplication
+namespace SocialMediaLists.Sample.ConsoleApplication
 {
     internal class Program
     {

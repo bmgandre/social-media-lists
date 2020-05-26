@@ -1,6 +1,6 @@
 using Serilog;
 
-namespace SocialMediaLists.Tests.Unit.Context.Logger
+namespace SocialMediaLists.Tests.Context.Logger
 {
     internal class IContextLogger
     {
