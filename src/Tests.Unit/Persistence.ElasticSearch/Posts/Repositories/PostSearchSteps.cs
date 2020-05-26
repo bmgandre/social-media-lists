@@ -11,14 +11,14 @@ using TechTalk.SpecFlow;
 namespace SocialMediaLists.Tests.Unit.Persistence.ElasticSearch.Posts.Repositories
 {
     [Binding]
-    public class PostQueryTests
+    public class PostSearchSteps
     {
         private readonly ScenarioContext _scenarioContext;
         private readonly EsReadPostRepository _esReadPostRepository;
         private readonly Mock<IElasticClient> _mockElasticClient;
         private PostFilter _postFilter;
         
-        public PostQueryTests(ScenarioContext scenarioContext)
+        public PostSearchSteps(ScenarioContext scenarioContext)
         {
             _scenarioContext = scenarioContext;
             _mockElasticClient = new Mock<IElasticClient>();
@@ -49,7 +49,7 @@ namespace SocialMediaLists.Tests.Unit.Persistence.ElasticSearch.Posts.Repositori
         {
             try
             {
-                await _esReadPostRepository.SearchAsync(_postFilter);
+                await _esReadPostRepository.SearchAsync(_postFilter, CancellationToken.None);
             }
             catch (Exception ex)
             {

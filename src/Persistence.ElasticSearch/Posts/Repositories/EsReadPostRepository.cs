@@ -3,6 +3,7 @@ using SocialMediaLists.Application.Contracts.Posts.Models;
 using SocialMediaLists.Application.Contracts.Posts.Repositories;
 using SocialMediaLists.Domain;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SocialMediaLists.Persistence.ElasticSearch.Posts.Repositories
@@ -16,7 +17,8 @@ namespace SocialMediaLists.Persistence.ElasticSearch.Posts.Repositories
             _elasticClient = elasticClient;
         }
 
-        public async Task<IEnumerable<Post>> SearchAsync(PostFilter filter)
+        public async Task<IEnumerable<Post>> SearchAsync(PostFilter filter,
+            CancellationToken cancellationToken)
         {
             var query = filter.CreateQuery();
             var searchRequest = new SearchRequest
@@ -25,7 +27,7 @@ namespace SocialMediaLists.Persistence.ElasticSearch.Posts.Repositories
                 Size = filter.Page?.Size,
                 Query = query
             };
-            var result = await _elasticClient.SearchAsync<Post>(searchRequest);
+            var result = await _elasticClient.SearchAsync<Post>(searchRequest, cancellationToken);
             return result.Documents;
         }
     }

@@ -8,6 +8,7 @@ using SocialMediaLists.Persistence.ElasticSearch.Posts.Repositories;
 using System;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using TestEnvironment.Docker;
 using TestEnvironment.Docker.Containers.Elasticsearch;
@@ -53,7 +54,7 @@ namespace Sample.ConsoleApplication
                     Size = 100
                 }
             };
-            var result = await postQuery.SearchAsync(filter);
+            var result = await postQuery.SearchAsync(filter, CancellationToken.None);
             Console.WriteLine($"Result count: {result.Count()}");
 
             Console.WriteLine("End");

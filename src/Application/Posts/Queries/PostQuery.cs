@@ -3,6 +3,7 @@ using SocialMediaLists.Application.Contracts.Posts.Queries;
 using SocialMediaLists.Application.Contracts.Posts.Repositories;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SocialMediaLists.Application.Posts.Queries
@@ -15,9 +16,10 @@ namespace SocialMediaLists.Application.Posts.Queries
             _readPostRepository = readPostRepository;
         }
 
-        public async Task<IEnumerable<PostModel>> SearchAsync(PostFilter filter)
+        public async Task<IEnumerable<PostModel>> SearchAsync(PostFilter filter, 
+            CancellationToken cancellationToken)
         {
-            var result = await _readPostRepository.SearchAsync(filter);
+            var result = await _readPostRepository.SearchAsync(filter, cancellationToken);
             return result.Select(x => new PostModel
             {
                 Date = x.Date,
