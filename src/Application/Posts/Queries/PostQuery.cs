@@ -11,12 +11,13 @@ namespace SocialMediaLists.Application.Posts.Queries
     public class PostQuery : IPostQuery
     {
         private readonly IReadPostRepository _readPostRepository;
+
         public PostQuery(IReadPostRepository readPostRepository)
         {
             _readPostRepository = readPostRepository;
         }
 
-        public async Task<IEnumerable<PostModel>> SearchAsync(PostFilter filter, 
+        public async Task<IEnumerable<PostModel>> SearchAsync(PostFilter filter,
             CancellationToken cancellationToken)
         {
             var result = await _readPostRepository.SearchAsync(filter, cancellationToken);

@@ -4,7 +4,7 @@ using SocialMediaLists.Domain;
 
 namespace SocialMediaLists.Persistence.ElasticSearch.Posts.Repositories
 {
-    public static class QueryContainerExtensions
+    internal static class QueryContainerExtensions
     {
         public static QueryContainer CreateQuery(this PostFilter filter)
         {

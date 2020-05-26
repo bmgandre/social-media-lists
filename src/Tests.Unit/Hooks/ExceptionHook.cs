@@ -5,7 +5,7 @@ using TechTalk.SpecFlow;
 namespace SocialMediaLists.Tests.Unit.Hooks
 {
     [Binding]
-    public class ExceptionHook
+    internal class ExceptionHook
     {
         private ScenarioContext _scenarioContext;
         private IContextLogger _contextLogger;

@@ -1,7 +1,7 @@
 ﻿@UnitTests
 @Application
-@Repository
 @Posts
+@Queries
 
 Feature: PostQuery
 

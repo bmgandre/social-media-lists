@@ -10,7 +10,7 @@ using TechTalk.SpecFlow;
 
 namespace SocialMediaLists.Tests.Unit.Application.Posts.Queries
 {
-    public class PostQuerySteps
+    internal class PostQuerySteps
     {
         private readonly ScenarioContext _scenarioContext;
         private readonly Mock<IReadPostRepository> _readPostRepository;

@@ -11,13 +11,13 @@ using TechTalk.SpecFlow;
 namespace SocialMediaLists.Tests.Unit.Persistence.ElasticSearch.Posts.Repositories
 {
     [Binding]
-    public class PostSearchSteps
+    internal class PostSearchSteps
     {
         private readonly ScenarioContext _scenarioContext;
         private readonly EsReadPostRepository _esReadPostRepository;
         private readonly Mock<IElasticClient> _mockElasticClient;
         private PostFilter _postFilter;
-        
+
         public PostSearchSteps(ScenarioContext scenarioContext)
         {
             _scenarioContext = scenarioContext;

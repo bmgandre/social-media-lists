@@ -2,7 +2,7 @@ using Serilog;
 
 namespace SocialMediaLists.Tests.Unit.Context.Logger
 {
-    public class IContextLogger
+    internal class IContextLogger
     {
         public ILogger Logger { get; private set; }
 
