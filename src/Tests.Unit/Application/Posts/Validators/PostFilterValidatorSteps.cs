@@ -4,6 +4,7 @@ using SocialMediaLists.Application.Contracts.Common.Validators;
 using SocialMediaLists.Application.Contracts.Posts.Models;
 using SocialMediaLists.Application.Posts.Validators;
 using System;
+using System.Linq;
 using TechTalk.SpecFlow;
 
 namespace SocialMediaLists.Tests.Unit.Application.Posts.Validators
@@ -45,13 +46,13 @@ namespace SocialMediaLists.Tests.Unit.Application.Posts.Validators
             var dateParser = new Chronic.Parser();
             _postFilter.DateRange = new DateRangeModel
             {
-                Begin = dateParser.Parse(begin).ToTime(),
-                End = dateParser.Parse(end).ToTime()
+                Begin = string.IsNullOrWhiteSpace(begin) ? default(DateTime?) : dateParser.Parse(begin).ToTime(),
+                End = string.IsNullOrWhiteSpace(end) ? default(DateTime?) : dateParser.Parse(end).ToTime()
             };
         }
 
         [Given(@"the post page filter is \['(.*)', '(.*)']")]
-        public void given_the_post_page_filter_is(int from, int size)
+        public void given_the_post_page_filter_is(int? from, int? size)
         {
             _postFilter.Page = new PageModel
             {
@@ -83,6 +84,23 @@ namespace SocialMediaLists.Tests.Unit.Application.Posts.Validators
         public void then_the_post_filter_validation_should_give_at_least_one_error()
         {
             _scenarioContext["Exception"].Should().BeOfType(typeof(ValidationException));
+        }
+
+        [Then(@"the post filter validation should give the error '(.*)'")]
+        public void then_the_post_filter_validation_should_give_the_error(string error)
+        {
+            if (!string.IsNullOrWhiteSpace(error))
+            {
+                var validationException = _scenarioContext["Exception"] as ValidationException;
+                validationException.Should().NotBeNull();
+                validationException.ValidationResult.Errors
+                    .Count(x => x.ErrorMessage.ToLower() == error.ToLower())
+                    .Should().Be(1);
+            } 
+            else
+            {
+                _scenarioContext.Keys.Should().NotContain("Exception");
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using SocialMediaLists.Application.Contracts.Common.Validators;
+﻿using FluentValidation;
+using SocialMediaLists.Application.Contracts.Common.Validators;
 using System.Linq;
 
 namespace SocialMediaLists.Application.Common.Validators
@@ -25,6 +26,15 @@ namespace SocialMediaLists.Application.Common.Validators
             };
 
             return converted;
+        }
+
+        public static void ValidateConvertAndThrow<T>(this AbstractValidator<T> validator, T entity)
+        {
+            var result = validator.Validate(entity);
+            if (!result.IsValid)
+            {
+                throw new Contracts.Common.Validators.ValidationException("Invalid filter", result.Convert());
+            }
         }
     }
 }
