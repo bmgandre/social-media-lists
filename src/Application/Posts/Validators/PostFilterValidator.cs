@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace SocialMediaLists.Application.Posts.Validators
 {
-    internal class PostFilterValidator : IPostFilterValidator
+    public class PostFilterValidator : IPostFilterValidator
     {
         private static readonly string[] _validateNetworks =
         {

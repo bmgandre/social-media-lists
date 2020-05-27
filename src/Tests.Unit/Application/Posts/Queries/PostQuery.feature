@@ -12,3 +12,4 @@ Scenario: Search posts with no filter
         And no data is provided for filtering the posts
         When I search the posts
         Then the post repository should be reached
+        And the post filter validator should be reached

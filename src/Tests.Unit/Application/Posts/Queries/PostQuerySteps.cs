@@ -1,6 +1,7 @@
 ﻿using Moq;
 using SocialMediaLists.Application.Contracts.Posts.Models;
 using SocialMediaLists.Application.Contracts.Posts.Repositories;
+using SocialMediaLists.Application.Contracts.Posts.Validators;
 using SocialMediaLists.Application.Posts.Queries;
 using SocialMediaLists.Domain;
 using System;
@@ -10,23 +11,29 @@ using TechTalk.SpecFlow;
 
 namespace SocialMediaLists.Tests.Unit.Application.Posts.Queries
 {
+    [Binding]
     internal class PostQuerySteps
     {
         private readonly ScenarioContext _scenarioContext;
         private readonly Mock<IReadPostRepository> _readPostRepository;
+        private readonly Mock<IPostFilterValidator> _postFilterValidator;
         private readonly PostQuery _postQuery;
         private PostFilter _postFilter;
 
         public PostQuerySteps(ScenarioContext scenarioContext)
         {
             _scenarioContext = scenarioContext;
-            _readPostRepository = new Mock<IReadPostRepository>();
 
+            _readPostRepository = new Mock<IReadPostRepository>();
             _readPostRepository
                 .Setup(x => x.SearchAsync(It.IsAny<PostFilter>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new List<Post>());
 
-            _postQuery = new PostQuery(_readPostRepository.Object);
+            _postFilterValidator = new Mock<IPostFilterValidator>();
+            _postFilterValidator
+                .Setup(x => x.ValidateAndThrow(It.IsAny<PostFilter>()));
+
+            _postQuery = new PostQuery(_readPostRepository.Object, _postFilterValidator.Object);
         }
 
         [Given(@"I have a request for searching posts")]
@@ -58,5 +65,13 @@ namespace SocialMediaLists.Tests.Unit.Application.Posts.Queries
         {
             _readPostRepository.Verify(mock => mock.SearchAsync(It.IsAny<PostFilter>(), It.IsAny<CancellationToken>()), Times.Once());
         }
+
+
+        [Then(@"the post filter validator should be reached")]
+        public void then_the_post_filter_validator_should_be_reached()
+        {
+            _postFilterValidator.Verify(mock => mock.ValidateAndThrow(It.IsAny<PostFilter>()), Times.Once());
+        }
+
     }
 }
