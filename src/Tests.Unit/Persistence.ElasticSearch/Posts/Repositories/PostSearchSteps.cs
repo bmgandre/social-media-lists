@@ -1,7 +1,7 @@
 using Moq;
 using Nest;
 using SocialMediaLists.Application.Contracts.Posts.Models;
-using SocialMediaLists.Domain;
+using SocialMediaLists.Domain.Posts;
 using SocialMediaLists.Persistence.ElasticSearch.Posts.Repositories;
 using System;
 using System.Collections.Generic;

@@ -1,6 +1,6 @@
 using Nest;
 using SocialMediaLists.Application.Contracts.Posts.Models;
-using SocialMediaLists.Domain;
+using SocialMediaLists.Domain.Posts;
 
 namespace SocialMediaLists.Persistence.ElasticSearch.Posts.Repositories
 {

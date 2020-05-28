@@ -4,7 +4,7 @@ using SocialMediaLists.Application.Contracts.Common.Models;
 using SocialMediaLists.Application.Contracts.Posts.Models;
 using SocialMediaLists.Application.Posts.Queries;
 using SocialMediaLists.Application.Posts.Validators;
-using SocialMediaLists.Domain;
+using SocialMediaLists.Domain.Posts;
 using SocialMediaLists.Persistence.ElasticSearch.Posts.Repositories;
 using System;
 using System.Linq;

@@ -1,5 +1,5 @@
 ﻿using SocialMediaLists.Application.Contracts.Posts.Models;
-using SocialMediaLists.Domain;
+using SocialMediaLists.Domain.Posts;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;

@@ -1,4 +1,4 @@
-using SocialMediaLists.Tests.Context.Logger;
+using SocialMediaLists.Tests.Logger;
 using System;
 using TechTalk.SpecFlow;
 
@@ -8,10 +8,10 @@ namespace SocialMediaLists.Tests.Hooks
     internal class ExceptionHook
     {
         private readonly ScenarioContext _scenarioContext;
-        private readonly IContextLogger _contextLogger;
+        private readonly LoggerContext _contextLogger;
 
         public ExceptionHook(ScenarioContext context,
-            IContextLogger contextLogger)
+            LoggerContext contextLogger)
         {
             _scenarioContext = context;
             _contextLogger = contextLogger;

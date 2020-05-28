@@ -30,7 +30,8 @@ namespace SocialMediaLists.Application.Posts.Validators
                 RuleFor(post => post.Page)
                     .SetValidator(new PageValidator());
 
-                When(post => !string.IsNullOrWhiteSpace(post.Network), () => {
+                When(post => !string.IsNullOrWhiteSpace(post.Network), () =>
+                {
                     RuleFor(post => post.Network)
                         .Must(network => _validateNetworks.Contains(network.ToLower()))
                         .WithMessage("Invalid network");

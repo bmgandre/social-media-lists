@@ -1,6 +1,6 @@
 using System;
 
-namespace SocialMediaLists.Domain
+namespace SocialMediaLists.Domain.Posts
 {
     public class Post
     {

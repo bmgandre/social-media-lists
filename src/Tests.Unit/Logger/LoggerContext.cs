@@ -1,12 +1,12 @@
 using Serilog;
 
-namespace SocialMediaLists.Tests.Context.Logger
+namespace SocialMediaLists.Tests.Logger
 {
-    internal class IContextLogger
+    internal class LoggerContext
     {
         public ILogger Logger { get; private set; }
 
-        public IContextLogger()
+        public LoggerContext()
         {
             Logger = new LoggerConfiguration()
                 .WriteTo.Console()

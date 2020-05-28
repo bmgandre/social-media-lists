@@ -3,7 +3,7 @@ using SocialMediaLists.Application.Contracts.Posts.Models;
 using SocialMediaLists.Application.Contracts.Posts.Repositories;
 using SocialMediaLists.Application.Contracts.Posts.Validators;
 using SocialMediaLists.Application.Posts.Queries;
-using SocialMediaLists.Domain;
+using SocialMediaLists.Domain.Posts;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -66,12 +66,10 @@ namespace SocialMediaLists.Tests.Unit.Application.Posts.Queries
             _readPostRepository.Verify(mock => mock.SearchAsync(It.IsAny<PostFilter>(), It.IsAny<CancellationToken>()), Times.Once());
         }
 
-
         [Then(@"the post filter validator should be reached")]
         public void then_the_post_filter_validator_should_be_reached()
         {
             _postFilterValidator.Verify(mock => mock.ValidateAndThrow(It.IsAny<PostFilter>()), Times.Once());
         }
-
     }
 }

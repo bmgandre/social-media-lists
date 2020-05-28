@@ -96,7 +96,7 @@ namespace SocialMediaLists.Tests.Unit.Application.Posts.Validators
                 validationException.ValidationResult.Errors
                     .Count(x => x.ErrorMessage.ToLower() == error.ToLower())
                     .Should().Be(1);
-            } 
+            }
             else
             {
                 _scenarioContext.Keys.Should().NotContain("Exception");
