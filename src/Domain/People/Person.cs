@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using SocialMediaLists.Domain.SocialLists;
+using System.Collections.Generic;
 
 namespace SocialMediaLists.Domain.People
 {
@@ -8,5 +9,6 @@ namespace SocialMediaLists.Domain.People
         public string Name { get; set; }
 
         public virtual ICollection<SocialAccount> Accounts { get; set; }
+        public virtual ICollection<SocialListPerson> SocialListPerson { get; set; }
     }
 }

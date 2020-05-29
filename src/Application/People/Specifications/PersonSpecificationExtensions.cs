@@ -3,9 +3,9 @@ using SocialMediaLists.Domain.People;
 
 namespace SocialMediaLists.Application.People.Specifications
 {
-    internal static class PersonSpecification
+    internal static class PersonSpecificationExtensions
     {
-        public static ISpecification<Person> AndWithName(this ISpecification<Person> specification, string name)
+        public static ISpecification<Person> WithName(this ISpecification<Person> specification, string name)
         {
             return specification.And(x => x.Name == name);
         }

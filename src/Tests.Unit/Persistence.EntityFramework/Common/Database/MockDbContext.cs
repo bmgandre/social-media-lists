@@ -9,7 +9,7 @@ namespace SocialMediaLists.Tests.Unit.Persistence.EntityFramework.Common.Databas
         public MockDbContext()
         {
             var options = new DbContextOptionsBuilder<SocialMediaListsDbContext>()
-                .UseInMemoryDatabase(databaseName: nameof(SocialMediaLists))
+                .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
                 .Options;
 
             DbContext = new SocialMediaListsDbContext(options);

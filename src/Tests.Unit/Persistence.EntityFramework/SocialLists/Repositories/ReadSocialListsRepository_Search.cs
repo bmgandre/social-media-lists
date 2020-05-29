@@ -1,38 +1,40 @@
 ﻿using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using SocialMediaLists.Application.Common.Data;
-using SocialMediaLists.Application.People.Specifications;
+using SocialMediaLists.Application.SocialLists.Specifications;
 using SocialMediaLists.Domain.People;
-using SocialMediaLists.Persistence.EntityFramework.People.Repositories;
+using SocialMediaLists.Domain.SocialLists;
+using SocialMediaLists.Persistence.EntityFramework.SocialLists.Repositories;
 using SocialMediaLists.Tests.Unit.Persistence.EntityFramework.Common.Database;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace SocialMediaLists.Tests.Unit.Persistence.EntityFramework.People.Repositories
+namespace SocialMediaLists.Tests.Unit.Persistence.EntityFramework.SocialLists.Repositories
 {
-    public sealed class ReadPeopleRepository_Search : IDisposable
+    public sealed class ReadSocialListsRepository_Search : IDisposable
     {
         private readonly MockDbContext _mockDbContext = new MockDbContext();
         private readonly DbContext _dbContext;
 
-        public ReadPeopleRepository_Search()
+        public ReadSocialListsRepository_Search()
         {
             _dbContext = _mockDbContext.DbContext;
-            SetUpData();
+            SetupData();
         }
 
-        private void SetUpData()
+        private void SetupData()
         {
             _dbContext.AddRange(GetSeedData());
             _dbContext.SaveChanges();
         }
 
-        private static IEnumerable<Person> GetSeedData()
+        private static IEnumerable<SocialListPerson> GetSeedData()
         {
-            return new List<Person>
+            var people1 = new List<Person>
             {
                 new Person
                 {
@@ -55,28 +57,39 @@ namespace SocialMediaLists.Tests.Unit.Persistence.EntityFramework.People.Reposit
                     Accounts = new List<SocialAccount> { new SocialAccount{ AccoutName = "ringostar", Network= "twitter", PersonId = 4 } }
                 }
             };
+            var list1 = new SocialList { Name = "The Beatles" };
+            var list2 = new SocialList { Name = "Paul McCartney and Wings" };
+            var data = people1
+                .Select(x => new SocialListPerson
+                {
+                    People = x,
+                    SocialLists = list1
+                })
+                .Concat(new List<SocialListPerson> { new SocialListPerson { People = people1[1], SocialLists = list2 } })
+                .ToList();
+            return data;
         }
 
         [Theory]
-        [InlineData("John")]
-        [InlineData("Paul")]
-        [InlineData("George")]
-        [InlineData("Ringo")]
-        public async Task Should_find_a_person_by_the_name(string name)
+        [InlineData("The Beatles", 4)]
+        [InlineData("Paul McCartney and Wings", 1)]
+        public async Task Should_find_all_people_by_the_list_name(string name, int expectedListSize)
         {
-            var peopleRepository = new ReadPeopleRepository(_mockDbContext.DbContext);
-            var specification = SpecificationBuilder<Person>.Create()
-                .WithName(name);
+            var peopleRepository = new ReadSocialListsRepository(_mockDbContext.DbContext);
+            var specification = SpecificationBuilder<SocialList>.Create()
+                    .WithName(name);
 
-            var result = await peopleRepository.SearchAsync(specification, CancellationToken.None);
+            var result = await peopleRepository.Where(specification, x => x.SocialListPerson, y => y.People)
+                .ToListAsync(CancellationToken.None);
 
             result.Should().HaveCount(1);
+            result.First().SocialListPerson.Count.Should().Be(expectedListSize);
         }
 
         public void Dispose()
         {
             _mockDbContext.Dispose();
-            GC.SuppressFinalize(this);
+            GC.SuppressFinalize(true);
         }
     }
 }
