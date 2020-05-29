@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace SocialMediaLists.Application.Posts.Validators
 {
-    public class PostFilterValidator : IPostFilterValidator
+    public class PostSearchRequestValidator : IPostSearchRequestValidator
     {
         private static readonly string[] _validateNetworks =
         {
@@ -21,17 +21,17 @@ namespace SocialMediaLists.Application.Posts.Validators
 
         private readonly FluentPostFilterValidator _validator;
 
-        public PostFilterValidator(IReadSocialListsRepository readSocialListsRepository)
+        public PostSearchRequestValidator(IReadSocialListsRepository readSocialListsRepository)
         {
             _validator = new FluentPostFilterValidator(readSocialListsRepository);
         }
 
-        public void ValidateAndThrow(SearchPostRequest entity)
+        public void ValidateAndThrow(PostSearchRequest entity)
         {
             _validator.ValidateConvertAndThrow(entity);
         }
 
-        private class FluentPostFilterValidator : AbstractValidator<SearchPostRequest>
+        private class FluentPostFilterValidator : AbstractValidator<PostSearchRequest>
         {
             private readonly IReadSocialListsRepository _readSocialListsRepository;
 

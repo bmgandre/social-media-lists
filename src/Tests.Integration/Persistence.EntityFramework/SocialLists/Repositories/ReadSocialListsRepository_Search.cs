@@ -5,7 +5,7 @@ using SocialMediaLists.Application.SocialLists.Specifications;
 using SocialMediaLists.Domain.People;
 using SocialMediaLists.Domain.SocialLists;
 using SocialMediaLists.Persistence.EntityFramework.SocialLists.Repositories;
-using SocialMediaLists.Tests.Unit.Persistence.EntityFramework.Common.Database;
+using SocialMediaLists.Tests.Integration.Persistence.EntityFramework.Common.Database;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +13,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace SocialMediaLists.Tests.Unit.Persistence.EntityFramework.SocialLists.Repositories
+namespace SocialMediaLists.Tests.Integration.Persistence.EntityFramework.SocialLists.Repositories
 {
     public sealed class ReadSocialListsRepository_Search : IDisposable
     {

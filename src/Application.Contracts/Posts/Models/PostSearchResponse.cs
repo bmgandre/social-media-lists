@@ -2,7 +2,7 @@ using System;
 
 namespace SocialMediaLists.Application.Contracts.Posts.Models
 {
-    public class SearchPostResponse
+    public class PostSearchResponse
     {
         public DateTime? Date { get; set; }
         public string Network { get; set; }

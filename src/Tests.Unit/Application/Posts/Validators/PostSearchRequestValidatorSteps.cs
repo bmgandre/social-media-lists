@@ -1,5 +1,4 @@
 ﻿using FluentAssertions;
-using Microsoft.EntityFrameworkCore;
 using Moq;
 using SocialMediaLists.Application.Contracts.Common.Data;
 using SocialMediaLists.Application.Contracts.Common.Models;
@@ -8,7 +7,6 @@ using SocialMediaLists.Application.Contracts.Posts.Models;
 using SocialMediaLists.Application.Contracts.SocialLists.Repositories;
 using SocialMediaLists.Application.Posts.Validators;
 using SocialMediaLists.Domain.SocialLists;
-using SocialMediaLists.Persistence.EntityFramework.SocialLists.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,14 +17,14 @@ using TechTalk.SpecFlow;
 namespace SocialMediaLists.Tests.Unit.Application.Posts.Validators
 {
     [Binding]
-    internal class PostFilterValidatorSteps
+    internal class PostSearchRequestValidatorSteps
     {
         private readonly ScenarioContext _scenarioContext;
-        private readonly PostFilterValidator _postFilterValidator;
-        private SearchPostRequest _postFilter;
+        private readonly PostSearchRequestValidator _postFilterValidator;
+        private PostSearchRequest _postFilter;
         private List<string> _socialListBackground = new List<string>();
 
-        public PostFilterValidatorSteps(ScenarioContext scenarioContext)
+        public PostSearchRequestValidatorSteps(ScenarioContext scenarioContext)
         {
             _scenarioContext = scenarioContext;
 
@@ -34,7 +32,7 @@ namespace SocialMediaLists.Tests.Unit.Application.Posts.Validators
             mockRepository.Setup(x => x.ExistsAsync(It.IsAny<ISpecification<SocialList>>(), It.IsAny<CancellationToken>()))
                 .Returns(() => Task.FromResult(_postFilter.Lists.All(x => _socialListBackground.Contains(x))));
 
-            _postFilterValidator = new PostFilterValidator(mockRepository.Object);
+            _postFilterValidator = new PostSearchRequestValidator(mockRepository.Object);
         }
 
         [Given(@"the following lists are registered")]
@@ -46,7 +44,7 @@ namespace SocialMediaLists.Tests.Unit.Application.Posts.Validators
         [Given(@"a search post request to validate")]
         public void given_a_search_post_request_to_validate()
         {
-            _postFilter = new SearchPostRequest();
+            _postFilter = new PostSearchRequest();
         }
 
         [Given(@"the post filter text is '(.*)'")]

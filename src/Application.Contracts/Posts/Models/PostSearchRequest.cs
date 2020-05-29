@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace SocialMediaLists.Application.Contracts.Posts.Models
 {
-    public class SearchPostRequest
+    public class PostSearchRequest
     {
         public string Text { get; set; }
         public string Network { get; set; }

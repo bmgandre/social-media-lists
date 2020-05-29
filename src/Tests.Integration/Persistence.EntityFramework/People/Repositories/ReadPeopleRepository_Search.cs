@@ -4,14 +4,14 @@ using SocialMediaLists.Application.Common.Data;
 using SocialMediaLists.Application.People.Specifications;
 using SocialMediaLists.Domain.People;
 using SocialMediaLists.Persistence.EntityFramework.People.Repositories;
-using SocialMediaLists.Tests.Unit.Persistence.EntityFramework.Common.Database;
+using SocialMediaLists.Tests.Integration.Persistence.EntityFramework.Common.Database;
 using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace SocialMediaLists.Tests.Unit.Persistence.EntityFramework.People.Repositories
+namespace SocialMediaLists.Tests.Integration.Persistence.EntityFramework.People.Repositories
 {
     public sealed class ReadPeopleRepository_Search : IDisposable
     {

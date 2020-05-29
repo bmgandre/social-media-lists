@@ -44,9 +44,9 @@ namespace SocialMediaLists.Sample.ConsoleApplication
 
                 var postRepository = new EsReadPostRepository(client);
                 var readSocialListsRepository = new ReadSocialListsRepository(null);
-                var validator = new PostFilterValidator(readSocialListsRepository);
+                var validator = new PostSearchRequestValidator(readSocialListsRepository);
                 var postQuery = new PostQuery(postRepository, validator);
-                var filter = new SearchPostRequest
+                var filter = new PostSearchRequest
                 {
                     DateRange = new DateRangeModel
                     {

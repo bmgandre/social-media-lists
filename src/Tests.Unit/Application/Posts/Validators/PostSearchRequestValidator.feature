@@ -3,7 +3,7 @@
 @Posts
 @Validators
 
-Feature: PostFilterValidator
+Feature: PostSearchRequestValidator
 
 	In order to avoid searches with empty
 	result, I want the post query filters to be

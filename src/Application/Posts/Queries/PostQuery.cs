@@ -11,22 +11,22 @@ namespace SocialMediaLists.Application.Posts.Queries
 {
     public class PostQuery : IPostQuery
     {
-        private readonly IPostFilterValidator _postFilterValidator;
+        private readonly IPostSearchRequestValidator _postFilterValidator;
         private readonly IReadPostRepository _readPostRepository;
 
         public PostQuery(IReadPostRepository readPostRepository,
-            IPostFilterValidator postFilterValidator)
+            IPostSearchRequestValidator postFilterValidator)
         {
             _readPostRepository = readPostRepository;
             _postFilterValidator = postFilterValidator;
         }
 
-        public async Task<IEnumerable<SearchPostResponse>> SearchAsync(SearchPostRequest filter,
+        public async Task<IEnumerable<PostSearchResponse>> SearchAsync(PostSearchRequest filter,
             CancellationToken cancellationToken)
         {
             _postFilterValidator.ValidateAndThrow(filter);
             var result = await _readPostRepository.SearchAsync(filter, cancellationToken);
-            return result.Select(x => new SearchPostResponse
+            return result.Select(x => new PostSearchResponse
             {
                 Date = x.Date,
                 Content = x.Content,

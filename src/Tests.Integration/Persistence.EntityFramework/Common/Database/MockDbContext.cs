@@ -2,7 +2,7 @@
 using SocialMediaLists.Persistence.EntityFramework.Common.Database;
 using System;
 
-namespace SocialMediaLists.Tests.Unit.Persistence.EntityFramework.Common.Database
+namespace SocialMediaLists.Tests.Integration.Persistence.EntityFramework.Common.Database
 {
     internal sealed class MockDbContext
     {
