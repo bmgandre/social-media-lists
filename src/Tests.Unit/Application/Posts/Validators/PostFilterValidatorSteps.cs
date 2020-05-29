@@ -1,10 +1,19 @@
 ﻿using FluentAssertions;
+using Microsoft.EntityFrameworkCore;
+using Moq;
+using SocialMediaLists.Application.Contracts.Common.Data;
 using SocialMediaLists.Application.Contracts.Common.Models;
 using SocialMediaLists.Application.Contracts.Common.Validators;
 using SocialMediaLists.Application.Contracts.Posts.Models;
+using SocialMediaLists.Application.Contracts.SocialLists.Repositories;
 using SocialMediaLists.Application.Posts.Validators;
+using SocialMediaLists.Domain.SocialLists;
+using SocialMediaLists.Persistence.EntityFramework.SocialLists.Repositories;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using TechTalk.SpecFlow;
 
 namespace SocialMediaLists.Tests.Unit.Application.Posts.Validators
@@ -14,18 +23,30 @@ namespace SocialMediaLists.Tests.Unit.Application.Posts.Validators
     {
         private readonly ScenarioContext _scenarioContext;
         private readonly PostFilterValidator _postFilterValidator;
-        private PostFilter _postFilter;
+        private SearchPostRequest _postFilter;
+        private List<string> _socialListBackground = new List<string>();
 
         public PostFilterValidatorSteps(ScenarioContext scenarioContext)
         {
             _scenarioContext = scenarioContext;
-            _postFilterValidator = new PostFilterValidator();
+
+            var mockRepository = new Mock<IReadSocialListsRepository>();
+            mockRepository.Setup(x => x.ExistsAsync(It.IsAny<ISpecification<SocialList>>(), It.IsAny<CancellationToken>()))
+                .Returns(() => Task.FromResult(_postFilter.Lists.All(x => _socialListBackground.Contains(x))));
+
+            _postFilterValidator = new PostFilterValidator(mockRepository.Object);
         }
 
-        [Given(@"I have post filter model to be validated")]
-        public void given_i_have_post_filter_model_to_be_validated()
+        [Given(@"the following lists are registered")]
+        public void given_the_following_lists_are_registered(Table table)
         {
-            _postFilter = new PostFilter();
+            _socialListBackground = table.Rows.SelectMany(x => x.Values).ToList();
+        }
+
+        [Given(@"a search post request to validate")]
+        public void given_a_search_post_request_to_validate()
+        {
+            _postFilter = new SearchPostRequest();
         }
 
         [Given(@"the post filter text is '(.*)'")]
@@ -38,6 +59,15 @@ namespace SocialMediaLists.Tests.Unit.Application.Posts.Validators
         public void given_the_post_network_filter_is(string network)
         {
             _postFilter.Network = network;
+        }
+
+        [Given(@"the post list filter contains")]
+        public void given_the_post_list_filter_contains(Table table)
+        {
+            var lists = table.Rows.SelectMany(x => x.Values)
+                .Where(x => !string.IsNullOrWhiteSpace(x))
+                .ToList();
+            _postFilter.Lists = lists;
         }
 
         [Given(@"the post date filter is \['(.*)', '(.*)']")]
@@ -61,8 +91,8 @@ namespace SocialMediaLists.Tests.Unit.Application.Posts.Validators
             };
         }
 
-        [When(@"I validate the post filter")]
-        public void when_i_validate_the_post_filter()
+        [When(@"the request to search posts with the specified filter is checked")]
+        public void when_the_request_to_search_posts_with_the_specified_filter_is_checked()
         {
             try
             {
@@ -95,7 +125,7 @@ namespace SocialMediaLists.Tests.Unit.Application.Posts.Validators
                 validationException.Should().NotBeNull();
                 validationException.ValidationResult.Errors
                     .Count(x => x.ErrorMessage.ToLower() == error.ToLower())
-                    .Should().Be(1);
+                    .Should().BeGreaterOrEqualTo(1);
             }
             else
             {

@@ -1,8 +1,14 @@
 ﻿using FluentValidation;
+using SocialMediaLists.Application.Common.Data;
 using SocialMediaLists.Application.Common.Validators;
 using SocialMediaLists.Application.Contracts.Posts.Models;
 using SocialMediaLists.Application.Contracts.Posts.Validators;
+using SocialMediaLists.Application.Contracts.SocialLists.Repositories;
+using SocialMediaLists.Application.SocialLists.Specifications;
+using SocialMediaLists.Domain.SocialLists;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace SocialMediaLists.Application.Posts.Validators
 {
@@ -13,17 +19,26 @@ namespace SocialMediaLists.Application.Posts.Validators
             "facebook", "twitter"
         };
 
-        private readonly FluentPostFilterValidator _validator = new FluentPostFilterValidator();
+        private readonly FluentPostFilterValidator _validator;
 
-        public void ValidateAndThrow(PostFilter entity)
+        public PostFilterValidator(IReadSocialListsRepository readSocialListsRepository)
+        {
+            _validator = new FluentPostFilterValidator(readSocialListsRepository);
+        }
+
+        public void ValidateAndThrow(SearchPostRequest entity)
         {
             _validator.ValidateConvertAndThrow(entity);
         }
 
-        private class FluentPostFilterValidator : AbstractValidator<PostFilter>
+        private class FluentPostFilterValidator : AbstractValidator<SearchPostRequest>
         {
-            public FluentPostFilterValidator()
+            private readonly IReadSocialListsRepository _readSocialListsRepository;
+
+            public FluentPostFilterValidator(IReadSocialListsRepository readSocialListsRepository)
             {
+                _readSocialListsRepository = readSocialListsRepository;
+
                 RuleFor(post => post.DateRange)
                     .SetValidator(new DateRangeValidator());
 
@@ -36,6 +51,21 @@ namespace SocialMediaLists.Application.Posts.Validators
                         .Must(network => _validateNetworks.Contains(network.ToLower()))
                         .WithMessage("Invalid network");
                 });
+
+                When(post => post.Lists?.Count(x => !string.IsNullOrWhiteSpace(x)) > 0, () =>
+                {
+                    RuleForEach(post => post.Lists)
+                        .MustAsync(BeAValidListAsync)
+                        .WithMessage("Invalid list");
+                });
+            }
+
+            private async Task<bool> BeAValidListAsync(string listName, CancellationToken cancellationToken)
+            {
+                var specification = SpecificationBuilder<SocialList>.Create()
+                    .WithName(listName);
+                var exists = await _readSocialListsRepository.ExistsAsync(specification, cancellationToken);
+                return exists;
             }
         }
     }

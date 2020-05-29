@@ -17,7 +17,7 @@ namespace SocialMediaLists.Persistence.ElasticSearch.Posts.Repositories
             _elasticClient = elasticClient;
         }
 
-        public async Task<IEnumerable<Post>> SearchAsync(PostFilter filter,
+        public async Task<IEnumerable<Post>> SearchAsync(SearchPostRequest filter,
             CancellationToken cancellationToken)
         {
             var query = filter.CreateQuery();

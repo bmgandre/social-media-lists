@@ -16,7 +16,7 @@ namespace SocialMediaLists.Tests.Unit.Persistence.ElasticSearch.Posts.Repositori
         private readonly ScenarioContext _scenarioContext;
         private readonly EsReadPostRepository _esReadPostRepository;
         private readonly Mock<IElasticClient> _mockElasticClient;
-        private PostFilter _postFilter;
+        private SearchPostRequest _postFilter;
 
         public PostSearchSteps(ScenarioContext scenarioContext)
         {
@@ -43,7 +43,7 @@ namespace SocialMediaLists.Tests.Unit.Persistence.ElasticSearch.Posts.Repositori
         [Scope(Tag = "Persistence.ElasticSearch")]
         public void given_no_data_is_provided_for_filtering_the_posts()
         {
-            _postFilter = new PostFilter();
+            _postFilter = new SearchPostRequest();
         }
 
         [When(@"I search the posts")]

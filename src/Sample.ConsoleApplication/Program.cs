@@ -6,6 +6,7 @@ using SocialMediaLists.Application.Posts.Queries;
 using SocialMediaLists.Application.Posts.Validators;
 using SocialMediaLists.Domain.Posts;
 using SocialMediaLists.Persistence.ElasticSearch.Posts.Repositories;
+using SocialMediaLists.Persistence.EntityFramework.SocialLists.Repositories;
 using System;
 using System.Linq;
 using System.Text;
@@ -42,9 +43,10 @@ namespace SocialMediaLists.Sample.ConsoleApplication
                 );
 
                 var postRepository = new EsReadPostRepository(client);
-                var validator = new PostFilterValidator();
+                var readSocialListsRepository = new ReadSocialListsRepository(null);
+                var validator = new PostFilterValidator(readSocialListsRepository);
                 var postQuery = new PostQuery(postRepository, validator);
-                var filter = new PostFilter
+                var filter = new SearchPostRequest
                 {
                     DateRange = new DateRangeModel
                     {

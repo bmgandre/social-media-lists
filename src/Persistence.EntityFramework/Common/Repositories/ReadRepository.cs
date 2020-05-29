@@ -37,5 +37,12 @@ namespace SocialMediaLists.Persistence.EntityFramework.Common.Repositories
         {
             return Where(specification.Predicate, path1, path2);
         }
+
+        public async Task<bool> ExistsAsync(ISpecification<T> specification, CancellationToken cancellationToken)
+        {
+            var count = await specification.Prepare(_dbContext.Set<T>().AsQueryable())
+                .CountAsync(cancellationToken);
+            return count > 0;
+        }
     }
 }

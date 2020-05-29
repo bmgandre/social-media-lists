@@ -21,12 +21,12 @@ namespace SocialMediaLists.Application.Posts.Queries
             _postFilterValidator = postFilterValidator;
         }
 
-        public async Task<IEnumerable<PostModel>> SearchAsync(PostFilter filter,
+        public async Task<IEnumerable<SearchPostResponse>> SearchAsync(SearchPostRequest filter,
             CancellationToken cancellationToken)
         {
             _postFilterValidator.ValidateAndThrow(filter);
             var result = await _readPostRepository.SearchAsync(filter, cancellationToken);
-            return result.Select(x => new PostModel
+            return result.Select(x => new SearchPostResponse
             {
                 Date = x.Date,
                 Content = x.Content,

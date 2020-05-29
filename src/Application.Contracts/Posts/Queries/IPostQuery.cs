@@ -7,6 +7,6 @@ namespace SocialMediaLists.Application.Contracts.Posts.Queries
 {
     public interface IPostQuery
     {
-        Task<IEnumerable<PostModel>> SearchAsync(PostFilter filter, CancellationToken cancellationToken);
+        Task<IEnumerable<SearchPostResponse>> SearchAsync(SearchPostRequest filter, CancellationToken cancellationToken);
     }
 }

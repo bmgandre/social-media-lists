@@ -6,7 +6,7 @@ namespace SocialMediaLists.Persistence.ElasticSearch.Posts.Repositories
 {
     internal static class QueryContainerExtensions
     {
-        public static QueryContainer CreateQuery(this PostFilter filter)
+        public static QueryContainer CreateQuery(this SearchPostRequest filter)
         {
             return new QueryContainer()
                 .AddTextualFilterIfNotEmpty(filter)
@@ -14,7 +14,7 @@ namespace SocialMediaLists.Persistence.ElasticSearch.Posts.Repositories
                 .AddDateIfAvailable(filter);
         }
 
-        private static QueryContainer AddTextualFilterIfNotEmpty(this QueryContainer query, PostFilter filter)
+        private static QueryContainer AddTextualFilterIfNotEmpty(this QueryContainer query, SearchPostRequest filter)
         {
             if (!string.IsNullOrWhiteSpace(filter.Text))
             {
@@ -24,7 +24,7 @@ namespace SocialMediaLists.Persistence.ElasticSearch.Posts.Repositories
             return query;
         }
 
-        private static QueryContainer AddNetworkIfNotEmpty(this QueryContainer query, PostFilter filter)
+        private static QueryContainer AddNetworkIfNotEmpty(this QueryContainer query, SearchPostRequest filter)
         {
             if (!string.IsNullOrWhiteSpace(filter.Network))
             {
@@ -34,12 +34,12 @@ namespace SocialMediaLists.Persistence.ElasticSearch.Posts.Repositories
             return query;
         }
 
-        private static QueryContainer AddDateIfAvailable(this QueryContainer query, PostFilter filter)
+        private static QueryContainer AddDateIfAvailable(this QueryContainer query, SearchPostRequest filter)
         {
             return query.AddBeginingDateIfAvailable(filter).AddEndingDateIfAvailable(filter);
         }
 
-        private static QueryContainer AddBeginingDateIfAvailable(this QueryContainer query, PostFilter filter)
+        private static QueryContainer AddBeginingDateIfAvailable(this QueryContainer query, SearchPostRequest filter)
         {
             if (filter.DateRange?.Begin.HasValue == true)
             {
@@ -51,7 +51,7 @@ namespace SocialMediaLists.Persistence.ElasticSearch.Posts.Repositories
             return query;
         }
 
-        private static QueryContainer AddEndingDateIfAvailable(this QueryContainer query, PostFilter filter)
+        private static QueryContainer AddEndingDateIfAvailable(this QueryContainer query, SearchPostRequest filter)
         {
             if (filter.DateRange?.End.HasValue == true)
             {
