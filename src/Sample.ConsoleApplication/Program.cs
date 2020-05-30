@@ -1,4 +1,5 @@
 ﻿using Elasticsearch.Net;
+using Microsoft.EntityFrameworkCore;
 using Nest;
 using SocialMediaLists.Application.Contracts.Common.Models;
 using SocialMediaLists.Application.Contracts.Posts.Models;
@@ -6,6 +7,7 @@ using SocialMediaLists.Application.Posts.Queries;
 using SocialMediaLists.Application.Posts.Validators;
 using SocialMediaLists.Domain.Posts;
 using SocialMediaLists.Persistence.ElasticSearch.Posts.Repositories;
+using SocialMediaLists.Persistence.EntityFramework.Common.Database;
 using SocialMediaLists.Persistence.EntityFramework.SocialLists.Repositories;
 using System;
 using System.Linq;
@@ -19,7 +21,7 @@ namespace SocialMediaLists.Sample.ConsoleApplication
 {
     internal class Program
     {
-        private static async Task Main(string[] args)
+        private static async Task Main()
         {
             Console.WriteLine("Start");
 
@@ -42,10 +44,16 @@ namespace SocialMediaLists.Sample.ConsoleApplication
                 }, idx => idx.Index(nameof(Post).ToLower())
                 );
 
-                var postRepository = new EsReadPostRepository(client);
-                var readSocialListsRepository = new ReadSocialListsRepository(null);
+                var options = new DbContextOptionsBuilder<SocialMediaListsDbContext>()
+                    .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
+                    .Options;
+                var dbContext = new SocialMediaListsDbContext(options);
+
+                var readSocialListsRepository = new ReadSocialListsRepository(dbContext);
                 var validator = new PostSearchRequestValidator(readSocialListsRepository);
+                var postRepository = new ReadPostRepository(client);
                 var postQuery = new PostQuery(postRepository, validator);
+
                 var filter = new PostSearchRequest
                 {
                     DateRange = new DateRangeModel

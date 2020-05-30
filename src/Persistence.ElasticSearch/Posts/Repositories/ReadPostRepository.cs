@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace SocialMediaLists.Persistence.ElasticSearch.Posts.Repositories
 {
-    public class EsReadPostRepository : IReadPostRepository
+    public class ReadPostRepository : IReadPostRepository
     {
         private readonly IElasticClient _elasticClient;
 
-        public EsReadPostRepository(IElasticClient elasticClient)
+        public ReadPostRepository(IElasticClient elasticClient)
         {
             _elasticClient = elasticClient;
         }
@@ -27,6 +27,7 @@ namespace SocialMediaLists.Persistence.ElasticSearch.Posts.Repositories
                 Size = filter.Page?.Size,
                 Query = query
             };
+
             var result = await _elasticClient.SearchAsync<Post>(searchRequest, cancellationToken);
             return result.Documents;
         }

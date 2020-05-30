@@ -14,7 +14,7 @@ namespace SocialMediaLists.Tests.Unit.Persistence.ElasticSearch.Posts.Repositori
     internal class PostSearchSteps
     {
         private readonly ScenarioContext _scenarioContext;
-        private readonly EsReadPostRepository _esReadPostRepository;
+        private readonly ReadPostRepository _esReadPostRepository;
         private readonly Mock<IElasticClient> _mockElasticClient;
         private PostSearchRequest _postFilter;
 
@@ -30,7 +30,7 @@ namespace SocialMediaLists.Tests.Unit.Persistence.ElasticSearch.Posts.Repositori
                 .Setup(x => x.SearchAsync<Post>(It.IsAny<SearchRequest>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(mockSearchResponse.Object);
 
-            _esReadPostRepository = new EsReadPostRepository(_mockElasticClient.Object);
+            _esReadPostRepository = new ReadPostRepository(_mockElasticClient.Object);
         }
 
         [Given(@"I have a request for searching posts")]
