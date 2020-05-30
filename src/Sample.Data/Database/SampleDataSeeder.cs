@@ -3,6 +3,7 @@ using Nest;
 using SocialMediaLists.Domain.Posts;
 using SocialMediaLists.Persistence.EntityFramework.Common.Database;
 using SocialMediaLists.Sample.Data.Common;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -51,6 +52,36 @@ namespace SocialMediaLists.Sample.Data.Database
         {
             await _elasticClient.IndexManyAsync(_dataSeedCollection.Posts.GenerateSeedData(),
                 nameof(Post).ToLower(), cancellationToken);
+        }
+
+        public void Seed()
+        {
+            if (ShouldSeed())
+            {
+                SeedSocialLists();
+                SeedPosts();
+            }
+        }
+
+        private bool ShouldSeed()
+        {
+            var hasValue = _socialMediaListsDbContext.SocialLists.Any();
+            return !hasValue;
+        }
+
+        private void SeedSocialLists()
+        {
+            _socialMediaListsDbContext.AddRange(_dataSeedCollection.People.GenerateSeedData());
+            _socialMediaListsDbContext.SaveChanges();
+
+            _socialMediaListsDbContext.AddRange(_dataSeedCollection.SocialList.GenerateSeedData());
+            _socialMediaListsDbContext.SaveChanges();
+        }
+
+        private void SeedPosts()
+        {
+            _elasticClient.IndexMany(_dataSeedCollection.Posts.GenerateSeedData(),
+                nameof(Post).ToLower());
         }
     }
 }

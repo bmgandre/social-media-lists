@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 
 namespace SocialMediaLists.WebApi
 {
@@ -28,6 +29,8 @@ namespace SocialMediaLists.WebApi
         {
             ConfigureSwagger(app, env);
             ConfigureEntityFramework(app, env);
+            ConfigureElasticSearch(app, env);
+            ConfigureSeedData(app, env);
 
             if (env.IsDevelopment())
             {

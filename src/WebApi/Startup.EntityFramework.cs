@@ -16,7 +16,8 @@ namespace SocialMediaLists.WebApi
 
         public void ConfigureEntityFramework(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            using var dbContext = new SocialMediaListsContextFactory().CreateDbContext(null);
+            using var serviceScope = app.ApplicationServices.CreateScope();
+            using var dbContext = serviceScope.ServiceProvider.GetService<SocialMediaListsDbContext>();
             dbContext.Database.Migrate();
         }
     }

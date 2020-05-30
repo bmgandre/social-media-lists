@@ -18,6 +18,7 @@
     <ProjectReference Include="..\Application\Application.csproj" />
     <ProjectReference Include="..\Persistence.ElasticSearch\Persistence.ElasticSearch.csproj" />
     <ProjectReference Include="..\Persistence.EntityFramework\Persistence.EntityFramework.csproj" />
+    <ProjectReference Include="..\Sample.Data\Sample.Data.csproj" />
   </ItemGroup>
 
 </Project>
