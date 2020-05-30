@@ -1,3 +1,7 @@
+### BEGIN SocialMediaLists
+SocialMediaLists.db
+### END SocialMediaLists
+
 ### BEGIN Specflow
 *.feature.cs
 ### END Specflow

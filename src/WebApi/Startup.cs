@@ -27,6 +27,7 @@ namespace SocialMediaLists.WebApi
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             ConfigureSwagger(app, env);
+            ConfigureEntityFramework(app, env);
 
             if (env.IsDevelopment())
             {
