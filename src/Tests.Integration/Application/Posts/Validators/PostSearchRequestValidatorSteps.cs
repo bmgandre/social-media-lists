@@ -51,7 +51,7 @@ namespace SocialMediaLists.Tests.Integration.Application.Posts.Validators
                 {
                     new SocialListPerson
                     {
-                        People = new Person { Name = "Sample" }
+                        Person = new Person { Name = "Sample" }
                     }
                 };
 
@@ -71,11 +71,11 @@ namespace SocialMediaLists.Tests.Integration.Application.Posts.Validators
                     Name = entry[0],
                     SocialListPerson = Enumerable
                         .Range(0, int.Parse(entry[1]))
-                        .Select(item => 
+                        .Select(item =>
                         {
                             return new SocialListPerson
                             {
-                                People = new Person { Name = $"Person {item}" }
+                                Person = new Person { Name = $"Person {item}" }
                             };
                         }).ToList()
                 };
@@ -83,7 +83,6 @@ namespace SocialMediaLists.Tests.Integration.Application.Posts.Validators
             await _dbContext.AddRangeAsync(socialLists);
             await _dbContext.SaveChangesAsync();
         }
-
 
         [Given(@"a search post request to validate")]
         public void given_a_search_post_request_to_validate()

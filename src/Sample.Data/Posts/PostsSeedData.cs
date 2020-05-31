@@ -38,7 +38,7 @@ namespace SocialMediaLists.Sample.Data.Posts
                     var person = faker.PickRandom(peopleData);
                     var account = faker.PickRandom(person.Accounts);
                     post.Network = account.Network;
-                    post.Link = faker.Internet.UrlWithPath("https", $"{account.Network}.com");
+                    post.Link = $"https://{account.Network}.com/{account.AccountName}/{faker.Random.AlphaNumeric(20)}";
                     post.Author = account.AccountName;
                 });
         }
@@ -46,7 +46,7 @@ namespace SocialMediaLists.Sample.Data.Posts
         public IEnumerable<Post> GenerateSeedData()
         {
             var fakerPost = GetPostFaker();
-            var result = fakerPost.Generate(10000);
+            var result = fakerPost.Generate(100000);
             _sample.AddRange(result.Take(100));
 
             return result;

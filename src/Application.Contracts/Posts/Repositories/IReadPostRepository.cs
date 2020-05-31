@@ -8,6 +8,6 @@ namespace SocialMediaLists.Application.Contracts.Posts.Repositories
 {
     public interface IReadPostRepository
     {
-        Task<IEnumerable<Post>> SearchAsync(PostSearchRequest filter, CancellationToken cancellationToken);
+        Task<IEnumerable<Post>> SearchAsync(PostFilter filter, CancellationToken cancellationToken);
     }
 }

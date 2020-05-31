@@ -1,20 +1,22 @@
 using Nest;
 using SocialMediaLists.Application.Contracts.Posts.Models;
 using SocialMediaLists.Domain.Posts;
+using System.Linq;
 
 namespace SocialMediaLists.Persistence.ElasticSearch.Posts.Repositories
 {
     internal static class QueryContainerExtensions
     {
-        public static QueryContainer CreateQuery(this PostSearchRequest filter)
+        public static QueryContainer CreateQuery(this PostFilter filter)
         {
             return new QueryContainer()
                 .AddTextualFilterIfNotEmpty(filter)
                 .AddNetworkIfNotEmpty(filter)
+                .AddAuthorsIfNotEmpty(filter)
                 .AddDateIfAvailable(filter);
         }
 
-        private static QueryContainer AddTextualFilterIfNotEmpty(this QueryContainer query, PostSearchRequest filter)
+        private static QueryContainer AddTextualFilterIfNotEmpty(this QueryContainer query, PostFilter filter)
         {
             if (!string.IsNullOrWhiteSpace(filter.Text))
             {
@@ -24,7 +26,7 @@ namespace SocialMediaLists.Persistence.ElasticSearch.Posts.Repositories
             return query;
         }
 
-        private static QueryContainer AddNetworkIfNotEmpty(this QueryContainer query, PostSearchRequest filter)
+        private static QueryContainer AddNetworkIfNotEmpty(this QueryContainer query, PostFilter filter)
         {
             if (!string.IsNullOrWhiteSpace(filter.Network))
             {
@@ -34,12 +36,22 @@ namespace SocialMediaLists.Persistence.ElasticSearch.Posts.Repositories
             return query;
         }
 
-        private static QueryContainer AddDateIfAvailable(this QueryContainer query, PostSearchRequest filter)
+        private static QueryContainer AddAuthorsIfNotEmpty(this QueryContainer query, PostFilter postFilter)
+        {
+            if (postFilter.Authors != null && postFilter.Authors.Count() > 0)
+            {
+                return query && Query<Post>.Terms(t => t.Field(f => f.Author).Terms(postFilter.Authors));
+            }
+
+            return query;
+        }
+
+        private static QueryContainer AddDateIfAvailable(this QueryContainer query, PostFilter filter)
         {
             return query.AddBeginingDateIfAvailable(filter).AddEndingDateIfAvailable(filter);
         }
 
-        private static QueryContainer AddBeginingDateIfAvailable(this QueryContainer query, PostSearchRequest filter)
+        private static QueryContainer AddBeginingDateIfAvailable(this QueryContainer query, PostFilter filter)
         {
             if (filter.DateRange?.Begin.HasValue == true)
             {
@@ -51,7 +63,7 @@ namespace SocialMediaLists.Persistence.ElasticSearch.Posts.Repositories
             return query;
         }
 
-        private static QueryContainer AddEndingDateIfAvailable(this QueryContainer query, PostSearchRequest filter)
+        private static QueryContainer AddEndingDateIfAvailable(this QueryContainer query, PostFilter filter)
         {
             if (filter.DateRange?.End.HasValue == true)
             {

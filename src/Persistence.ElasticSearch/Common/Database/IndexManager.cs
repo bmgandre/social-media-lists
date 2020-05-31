@@ -32,7 +32,8 @@ namespace SocialMediaLists.Persistence.ElasticSearch.Common.Database
             {
                 return mapping.AutoMap()
                     .Properties(property => property.Keyword(key => key.Name(post => post.Network)))
-                    .Properties(property => property.Keyword(key => key.Name(post => post.Link)));
+                    .Properties(property => property.Keyword(key => key.Name(post => post.Link)))
+                    .Properties(property => property.Keyword(key => key.Name(post => post.Author)));
             });
         }
 

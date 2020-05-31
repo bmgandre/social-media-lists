@@ -2,6 +2,7 @@
 using SocialMediaLists.Application.Contracts.Posts.Models;
 using SocialMediaLists.Application.Contracts.Posts.Repositories;
 using SocialMediaLists.Application.Contracts.Posts.Validators;
+using SocialMediaLists.Application.Contracts.SocialLists.Repositories;
 using SocialMediaLists.Application.Posts.Queries;
 using SocialMediaLists.Domain.Posts;
 using System;
@@ -18,6 +19,7 @@ namespace SocialMediaLists.Tests.Unit.Application.Posts.Queries
         private readonly ScenarioContext _scenarioContext;
         private readonly Mock<IReadPostRepository> _readPostRepository;
         private readonly Mock<IPostSearchRequestValidator> _postFilterValidator;
+        private readonly Mock<IReadSocialListsRepository> _readSocialListRepository;
         private readonly PostQuery _postQuery;
         private PostSearchRequest _postFilter;
 
@@ -27,14 +29,16 @@ namespace SocialMediaLists.Tests.Unit.Application.Posts.Queries
 
             _readPostRepository = new Mock<IReadPostRepository>();
             _readPostRepository
-                .Setup(x => x.SearchAsync(It.IsAny<PostSearchRequest>(), It.IsAny<CancellationToken>()))
+                .Setup(x => x.SearchAsync(It.IsAny<PostFilter>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new List<Post>());
+
+            _readSocialListRepository = new Mock<IReadSocialListsRepository>();
 
             _postFilterValidator = new Mock<IPostSearchRequestValidator>();
             _postFilterValidator
                 .Setup(x => x.ValidateAndThrowAsync(It.IsAny<PostSearchRequest>(), It.IsAny<CancellationToken>()));
 
-            _postQuery = new PostQuery(_readPostRepository.Object, _postFilterValidator.Object);
+            _postQuery = new PostQuery(_readPostRepository.Object, _readSocialListRepository.Object, _postFilterValidator.Object);
         }
 
         [Given(@"I have a request for searching posts")]
@@ -64,7 +68,7 @@ namespace SocialMediaLists.Tests.Unit.Application.Posts.Queries
         [Then(@"the post repository should be reached")]
         public void then_the_post_repository_should_be_reached()
         {
-            _readPostRepository.Verify(mock => mock.SearchAsync(It.IsAny<PostSearchRequest>(), It.IsAny<CancellationToken>()), Times.Once());
+            _readPostRepository.Verify(mock => mock.SearchAsync(It.IsAny<PostFilter>(), It.IsAny<CancellationToken>()), Times.Once());
         }
 
         [Then(@"the post filter validator should be reached")]

@@ -35,7 +35,7 @@ namespace SocialMediaLists.Tests.Integration.Persistence.ElasticSearch.Posts.Rep
             var mockClient = new MockElasticClient<PostSource>(GetSeedData(), "posts");
             var repository = new ReadPostRepository(mockClient.ElasticClient);
 
-            var result = await repository.SearchAsync(new PostSearchRequest(),
+            var result = await repository.SearchAsync(new PostFilter(),
                 CancellationToken.None);
 
             result.Count(x => x.Content == term).Should().Be(expectCount);

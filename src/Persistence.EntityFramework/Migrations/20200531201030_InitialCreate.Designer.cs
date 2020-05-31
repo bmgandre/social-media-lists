@@ -8,7 +8,7 @@ using SocialMediaLists.Persistence.EntityFramework.Common.Database;
 namespace SocialMediaLists.Persistence.EntityFramework.Migrations
 {
     [DbContext(typeof(SocialMediaListsDbContext))]
-    [Migration("20200531143447_InitialCreate")]
+    [Migration("20200531201030_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -37,7 +37,7 @@ namespace SocialMediaLists.Persistence.EntityFramework.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("AccoutName")
+                    b.Property<string>("AccountName")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Network")
@@ -93,13 +93,13 @@ namespace SocialMediaLists.Persistence.EntityFramework.Migrations
 
             modelBuilder.Entity("SocialMediaLists.Domain.SocialLists.SocialListPerson", b =>
                 {
-                    b.HasOne("SocialMediaLists.Domain.People.Person", "People")
+                    b.HasOne("SocialMediaLists.Domain.People.Person", "Person")
                         .WithMany("SocialListPerson")
                         .HasForeignKey("PersonId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SocialMediaLists.Domain.SocialLists.SocialList", "SocialLists")
+                    b.HasOne("SocialMediaLists.Domain.SocialLists.SocialList", "SocialList")
                         .WithMany("SocialListPerson")
                         .HasForeignKey("SocialListId")
                         .OnDelete(DeleteBehavior.Cascade)

@@ -62,10 +62,10 @@ namespace SocialMediaLists.Tests.Integration.Persistence.EntityFramework.SocialL
             var data = people1
                 .Select(x => new SocialListPerson
                 {
-                    People = x,
-                    SocialLists = list1
+                    Person = x,
+                    SocialList = list1
                 })
-                .Concat(new List<SocialListPerson> { new SocialListPerson { People = people1[1], SocialLists = list2 } })
+                .Concat(new List<SocialListPerson> { new SocialListPerson { Person = people1[1], SocialList = list2 } })
                 .ToList();
             return data;
         }
@@ -79,7 +79,7 @@ namespace SocialMediaLists.Tests.Integration.Persistence.EntityFramework.SocialL
             var specification = SpecificationBuilder<SocialList>.Create()
                     .WithName(name);
 
-            var result = await peopleRepository.Where(specification, x => x.SocialListPerson, y => y.People)
+            var result = await peopleRepository.Where(specification, x => x.SocialListPerson, y => y.Person)
                 .ToListAsync(CancellationToken.None);
 
             result.Should().HaveCount(1);

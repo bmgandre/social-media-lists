@@ -35,7 +35,7 @@ namespace SocialMediaLists.Persistence.EntityFramework.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("AccoutName")
+                    b.Property<string>("AccountName")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Network")
@@ -91,13 +91,13 @@ namespace SocialMediaLists.Persistence.EntityFramework.Migrations
 
             modelBuilder.Entity("SocialMediaLists.Domain.SocialLists.SocialListPerson", b =>
                 {
-                    b.HasOne("SocialMediaLists.Domain.People.Person", "People")
+                    b.HasOne("SocialMediaLists.Domain.People.Person", "Person")
                         .WithMany("SocialListPerson")
                         .HasForeignKey("PersonId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SocialMediaLists.Domain.SocialLists.SocialList", "SocialLists")
+                    b.HasOne("SocialMediaLists.Domain.SocialLists.SocialList", "SocialList")
                         .WithMany("SocialListPerson")
                         .HasForeignKey("SocialListId")
                         .OnDelete(DeleteBehavior.Cascade)

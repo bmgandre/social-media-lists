@@ -79,6 +79,7 @@ namespace SocialMediaLists.Sample.ConsoleApplication
 
         private static PostSearchRequest GenerateSearchPostRequest(string queryTerm)
         {
+            var network = new string[] { "facebook", "twitter" }[new Random().Next(0, 2)];
             return new PostSearchRequest
             {
                 DateRange = new DateRangeModel
@@ -87,7 +88,7 @@ namespace SocialMediaLists.Sample.ConsoleApplication
                     End = DateTime.Now
                 },
                 Text = queryTerm,
-                Network = "facebook",
+                Network = network,
                 Page = new PageModel
                 {
                     From = 0,
@@ -102,7 +103,8 @@ namespace SocialMediaLists.Sample.ConsoleApplication
             var readSocialListsRepository = new ReadSocialListsRepository(dbContext);
             var postSearchValidator = new PostSearchRequestValidator(readSocialListsRepository);
             var postRepository = new ReadPostRepository(elasticClient);
-            var postQuery = new PostQuery(postRepository, postSearchValidator);
+
+            var postQuery = new PostQuery(postRepository, readSocialListsRepository, postSearchValidator);
 
             return postQuery;
         }

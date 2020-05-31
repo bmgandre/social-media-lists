@@ -42,8 +42,7 @@ namespace SocialMediaLists.Tests.Unit.Application.SocialLists.Data
                 Name = "The Beatles",
                 SocialListPerson = people1.Select(x => new SocialListPerson
                 {
-                    
-                    People = x,
+                    Person = x,
                     PersonId = x.PersonId
                 }).ToList()
             };
@@ -53,7 +52,7 @@ namespace SocialMediaLists.Tests.Unit.Application.SocialLists.Data
                 Name = "Paul McCartney and Wings",
                 SocialListPerson = new SocialListPerson[]
                 {
-                    new SocialListPerson { People = people1[1], PersonId = people1[1].PersonId }
+                    new SocialListPerson { Person = people1[1], PersonId = people1[1].PersonId }
                 }
             };
 

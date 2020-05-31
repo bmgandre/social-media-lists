@@ -41,7 +41,7 @@ namespace SocialMediaLists.Sample.Data.People
         public IEnumerable<Person> GenerateSeedData()
         {
             var fakerPerson = GetPersonFaker();
-            var result = fakerPerson.Generate(1000);
+            var result = fakerPerson.Generate(500);
             _sample.AddRange(result);
 
             return result;
