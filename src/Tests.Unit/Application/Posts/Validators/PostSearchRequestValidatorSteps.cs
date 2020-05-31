@@ -90,11 +90,11 @@ namespace SocialMediaLists.Tests.Unit.Application.Posts.Validators
         }
 
         [When(@"the request to search posts with the specified filter is checked")]
-        public void when_the_request_to_search_posts_with_the_specified_filter_is_checked()
+        public async Task when_the_request_to_search_posts_with_the_specified_filter_is_checked()
         {
             try
             {
-                _postFilterValidator.ValidateAndThrow(_postFilter);
+                await _postFilterValidator.ValidateAndThrowAsync(_postFilter, CancellationToken.None);
             }
             catch (Exception ex)
             {

@@ -8,6 +8,7 @@ using SocialMediaLists.Persistence.EntityFramework.SocialLists.Repositories;
 using SocialMediaLists.Tests.Integration.Persistence.EntityFramework.Common.Database;
 using System;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
@@ -62,11 +63,11 @@ namespace SocialMediaLists.Tests.Integration.Application.Posts.Validators
         }
 
         [When(@"the request to search posts with the specified filter is checked")]
-        public void when_the_request_to_search_posts_with_the_specified_filter_is_checked()
+        public async Task when_the_request_to_search_posts_with_the_specified_filter_is_checked()
         {
             try
             {
-                _postFilterValidator.ValidateAndThrow(_postFilter);
+                await _postFilterValidator.ValidateAndThrowAsync(_postFilter, CancellationToken.None);
             }
             catch (Exception ex)
             {

@@ -31,7 +31,7 @@ namespace SocialMediaLists.Tests.Unit.Application.Posts.Queries
 
             _postFilterValidator = new Mock<IPostSearchRequestValidator>();
             _postFilterValidator
-                .Setup(x => x.ValidateAndThrow(It.IsAny<PostSearchRequest>()));
+                .Setup(x => x.ValidateAndThrowAsync(It.IsAny<PostSearchRequest>(), It.IsAny<CancellationToken>()));
 
             _postQuery = new PostQuery(_readPostRepository.Object, _postFilterValidator.Object);
         }
@@ -69,7 +69,7 @@ namespace SocialMediaLists.Tests.Unit.Application.Posts.Queries
         [Then(@"the post filter validator should be reached")]
         public void then_the_post_filter_validator_should_be_reached()
         {
-            _postFilterValidator.Verify(mock => mock.ValidateAndThrow(It.IsAny<PostSearchRequest>()), Times.Once());
+            _postFilterValidator.Verify(mock => mock.ValidateAndThrowAsync(It.IsAny<PostSearchRequest>(), It.IsAny<CancellationToken>()), Times.Once());
         }
     }
 }

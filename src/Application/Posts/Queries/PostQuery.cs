@@ -24,7 +24,7 @@ namespace SocialMediaLists.Application.Posts.Queries
         public async Task<IEnumerable<PostSearchResponse>> SearchAsync(PostSearchRequest filter,
             CancellationToken cancellationToken)
         {
-            _postFilterValidator.ValidateAndThrow(filter);
+            await _postFilterValidator.ValidateAndThrowAsync(filter, cancellationToken);
             var result = await _readPostRepository.SearchAsync(filter, cancellationToken);
             return result.Select(x => new PostSearchResponse
             {

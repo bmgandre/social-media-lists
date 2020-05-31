@@ -1,7 +1,10 @@
-﻿namespace SocialMediaLists.Application.Contracts.Common.Validators
+﻿using System.Threading;
+using System.Threading.Tasks;
+
+namespace SocialMediaLists.Application.Contracts.Common.Validators
 {
     public interface IModelValidator<T>
     {
-        void ValidateAndThrow(T entity);
+        Task ValidateAndThrowAsync(T entity, CancellationToken cancellationToken);
     }
 }

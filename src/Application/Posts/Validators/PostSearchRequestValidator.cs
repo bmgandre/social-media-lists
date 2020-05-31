@@ -26,9 +26,9 @@ namespace SocialMediaLists.Application.Posts.Validators
             _validator = new FluentPostFilterValidator(readSocialListsRepository);
         }
 
-        public void ValidateAndThrow(PostSearchRequest entity)
+        public async Task ValidateAndThrowAsync(PostSearchRequest entity, CancellationToken cancellationToken)
         {
-            _validator.ValidateConvertAndThrow(entity);
+            await _validator.ValidateConvertAndThrowAsync(entity, cancellationToken);
         }
 
         private class FluentPostFilterValidator : AbstractValidator<PostSearchRequest>

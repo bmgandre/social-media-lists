@@ -1,6 +1,8 @@
 ﻿using FluentValidation;
 using SocialMediaLists.Application.Contracts.Common.Validators;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace SocialMediaLists.Application.Common.Validators
 {
@@ -28,9 +30,9 @@ namespace SocialMediaLists.Application.Common.Validators
             return converted;
         }
 
-        public static void ValidateConvertAndThrow<T>(this AbstractValidator<T> validator, T entity)
+        public static async Task ValidateConvertAndThrowAsync<T>(this AbstractValidator<T> validator, T entity, CancellationToken cancellationToken)
         {
-            var result = validator.Validate(entity);
+            var result = await validator.ValidateAsync(entity, cancellationToken);
             if (!result.IsValid)
             {
                 throw new Contracts.Common.Validators.ValidationException("Invalid filter", result.Convert());

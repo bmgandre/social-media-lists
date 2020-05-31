@@ -1,6 +1,8 @@
 ﻿using FluentAssertions;
 using Moq;
+using SocialMediaLists.Application.Contracts.People.Models;
 using SocialMediaLists.Application.Contracts.People.Repositories;
+using SocialMediaLists.Application.Contracts.People.Validators;
 using SocialMediaLists.Application.People.Queries;
 using SocialMediaLists.Tests.Unit.Application.People.Data;
 using System.Linq;
@@ -25,8 +27,11 @@ namespace SocialMediaLists.Tests.Unit.Application.People.Queries
                 {
                     return Task.FromResult(PeopleData.GetSeedData().FirstOrDefault(x => x.PersonId == (long)o[0]));
                 });
+            var mockValidator = new Mock<IPeopleFindValidators>();
+            mockValidator.Setup(m => m.ValidateAndThrowAsync(It.IsAny<PersonFindModel>(), It.IsAny<CancellationToken>()))
+                .Returns(Task.FromResult(true));
 
-            var queryPeople = new PeopleQuery(mockRepository.Object);
+            var queryPeople = new PeopleQuery(mockRepository.Object, mockValidator.Object);
 
             var person = await queryPeople.GetByIdAsync(id, CancellationToken.None);
 
