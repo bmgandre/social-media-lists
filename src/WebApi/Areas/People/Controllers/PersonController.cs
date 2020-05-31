@@ -12,11 +12,11 @@ namespace SocialMediaLists.WebApi.Areas.People.Controllers
     [Area(nameof(People))]
     [ApiController]
     [Route("[area]/[controller]")]
-    public class QueryPeopleController : ControllerBase
+    public class PersonController : ControllerBase
     {
         private readonly IPeopleQuery _peopleQuery;
 
-        public QueryPeopleController(IPeopleQuery peopleQuery)
+        public PersonController(IPeopleQuery peopleQuery)
         {
             _peopleQuery = peopleQuery;
         }

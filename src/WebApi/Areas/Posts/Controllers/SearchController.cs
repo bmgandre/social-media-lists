@@ -13,11 +13,11 @@ namespace SocialMediaLists.WebApi.Areas.Posts.Controllers
     [Area(nameof(Posts))]
     [ApiController]
     [Route("[area]/[controller]")]
-    public class QueryPostsController : ControllerBase
+    public class SearchController : ControllerBase
     {
         private readonly IPostQuery _postQuery;
 
-        public QueryPostsController(IPostQuery postQuery)
+        public SearchController(IPostQuery postQuery)
         {
             _postQuery = postQuery;
         }
