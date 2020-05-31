@@ -9,6 +9,8 @@ namespace SocialMediaLists.Application.Contracts.Common.Data
 {
     public interface IReadRepository<T>
     {
+        Task<T> FindAsync(CancellationToken cancellationToken, params object[] keys);
+
         Task<IEnumerable<T>> SearchAsync(ISpecification<T> specification, CancellationToken cancellationToken);
 
         IQueryable<T> Where<T1Property, T2Property>(Expression<Func<T, bool>> predicate,

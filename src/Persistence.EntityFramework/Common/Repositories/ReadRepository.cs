@@ -18,6 +18,12 @@ namespace SocialMediaLists.Persistence.EntityFramework.Common.Repositories
             _dbContext = dbContext;
         }
 
+        public virtual async Task<T> FindAsync(CancellationToken cancellationToken, params object[] keys)
+        {
+            var entity = await _dbContext.Set<T>().FindAsync(cancellationToken, keys);
+            return entity;
+        }
+
         public virtual async Task<IEnumerable<T>> SearchAsync(ISpecification<T> specification,
             CancellationToken cancellationToken)
         {
