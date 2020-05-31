@@ -24,12 +24,26 @@ namespace SocialMediaLists.Tests.Unit.Application.SocialLists.Queries
         public async Task Should_find_a_sociallist_by_id(long id)
         {
             var mockRepository = new Mock<IReadSocialListsRepository>();
-            mockRepository.Setup(m => m.SearchAsync(It.IsAny<ISpecification<SocialList>>(), It.IsAny<Expression<Func<SocialList, IEnumerable<SocialListPerson>>>>(), It.IsAny<Expression<Func<SocialListPerson, Person>>>(), It.IsAny<CancellationToken>()))
-                .Returns<ISpecification<SocialList>, Expression<Func<SocialList, IEnumerable<SocialListPerson>>>, Expression<Func<SocialListPerson, Person>>, CancellationToken>((p, e1, e2, c) =>
+
+            Func<ISpecification<SocialList>,
+                Expression<Func<SocialList, IEnumerable<SocialListPerson>>>,
+                Expression<Func<SocialListPerson, Person>>,
+                CancellationToken,
+                Task<IEnumerable<SocialList>>> searchAsyncCallback = (specification, path1, path2, cancellationToken) =>
                 {
-                    var id = GetSearchIdFromExpression(p);
+                    var id = GetSearchIdFromExpression(specification);
                     return Task.FromResult(SocialListsData.GetSeedData().Where(x => x.SocialListId == id));
-                });
+                };
+
+            mockRepository
+                .Setup(m =>
+                    m.SearchAsync(
+                        It.IsAny<ISpecification<SocialList>>(),
+                        It.IsAny<Expression<Func<SocialList, IEnumerable<SocialListPerson>>>>(),
+                        It.IsAny<Expression<Func<SocialListPerson, Person>>>(),
+                        It.IsAny<CancellationToken>())
+                    )
+                .Returns(searchAsyncCallback);
 
             var queryPeople = new SocialListsQuery(mockRepository.Object);
 

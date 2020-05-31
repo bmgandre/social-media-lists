@@ -65,7 +65,11 @@ namespace SocialMediaLists.Tests.Unit.Persistence.ElasticSearch.Posts.Repositori
         [Scope(Tag = "Persistence.ElasticSearch")]
         public void then_the_post_repository_should_be_reached()
         {
-            _mockElasticClient.Verify(mock => mock.SearchAsync<Post>(It.IsAny<SearchRequest>(), It.IsAny<CancellationToken>()), Times.Once());
+            _mockElasticClient.Verify(mock =>
+                mock.SearchAsync<Post>(
+                    It.IsAny<SearchRequest>(),
+                    It.IsAny<CancellationToken>()
+                    ), Times.Once());
         }
     }
 }
