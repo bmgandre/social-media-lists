@@ -8,6 +8,7 @@ namespace SocialMediaLists.Domain.Posts
         public DateTime Date { get; set; }
         public string Network { get; set; }
         public string Link { get; set; }
+        public string Author { get; set; }
         public string Content { get; set; }
     }
 }

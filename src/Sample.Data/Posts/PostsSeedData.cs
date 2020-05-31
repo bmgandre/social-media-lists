@@ -1,5 +1,6 @@
 ﻿using Bogus;
 using SocialMediaLists.Domain.Posts;
+using SocialMediaLists.Sample.Data.People;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -7,7 +8,13 @@ namespace SocialMediaLists.Sample.Data.Posts
 {
     public class PostsSeedData
     {
+        private readonly PeopleSeedData _peopleSeedData;
         private readonly List<Post> _sample = new List<Post>();
+
+        public PostsSeedData(PeopleSeedData peopleSeedData)
+        {
+            _peopleSeedData = peopleSeedData;
+        }
 
         public IReadOnlyCollection<Post> GetSample()
         {
@@ -18,14 +25,22 @@ namespace SocialMediaLists.Sample.Data.Posts
             return _sample;
         }
 
-        private static Bogus.Faker<Post> GetPostFaker()
+        private Bogus.Faker<Post> GetPostFaker()
         {
+            var peopleData = _peopleSeedData.GetSample().ToList();
             var networks = new[] { "facebook", "twitter" };
+
             return new Bogus.Faker<Post>()
-               .RuleFor(post => post.Date, faker => faker.Date.RecentOffset(180).DateTime)
-               .RuleFor(post => post.Network, faker => faker.PickRandom(networks))
-               .RuleFor(post => post.Link, (faker, post) => faker.Internet.UrlWithPath("https", $"{post.Network}.com"))
-               .RuleFor(post => post.Content, faker => faker.WaffleText(1, false));
+                .Rules((faker, post) =>
+                {
+                    post.Date = faker.Date.RecentOffset(180).DateTime;
+                    post.Content = faker.WaffleText(1, false);
+                    var person = faker.PickRandom(peopleData);
+                    var account = faker.PickRandom(person.Accounts);
+                    post.Network = account.Network;
+                    post.Link = faker.Internet.UrlWithPath("https", $"{account.Network}.com");
+                    post.Author = account.AccountName;
+                });
         }
 
         public IEnumerable<Post> GenerateSeedData()

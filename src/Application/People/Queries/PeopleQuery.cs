@@ -39,7 +39,7 @@ namespace SocialMediaLists.Application.People.Queries
                 {
                     return new SocialAccountModel
                     {
-                        AccoutName = account.AccoutName,
+                        AccountName = account.AccountName,
                         Network = account.Network
                     };
                 })

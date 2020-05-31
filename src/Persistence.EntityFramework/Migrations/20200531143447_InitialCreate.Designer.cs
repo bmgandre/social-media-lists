@@ -8,7 +8,7 @@ using SocialMediaLists.Persistence.EntityFramework.Common.Database;
 namespace SocialMediaLists.Persistence.EntityFramework.Migrations
 {
     [DbContext(typeof(SocialMediaListsDbContext))]
-    [Migration("20200530141911_InitialCreate")]
+    [Migration("20200531143447_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

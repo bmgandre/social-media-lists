@@ -23,8 +23,12 @@ namespace SocialMediaLists.Sample.Data.SocialLists
             var fakerSocialListPerson = GetSocialListPersonFaker();
 
             return new Bogus.Faker<SocialList>()
-                .RuleFor(socialList => socialList.SocialListPerson, faker => fakerSocialListPerson.Generate(100))
-                .RuleFor(socialList => socialList.Name, faker => faker.Company.CompanyName());
+                .Rules((faker, socialList) =>
+                {
+                    var memberCount = faker.Random.Int(5, 200);
+                    socialList.SocialListPerson = fakerSocialListPerson.Generate(memberCount);
+                    socialList.Name = faker.Company.CompanyName();
+                });
         }
 
         private static Bogus.Faker<SocialListPerson> GetSocialListPersonFaker()

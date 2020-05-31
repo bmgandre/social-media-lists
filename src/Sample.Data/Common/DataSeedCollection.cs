@@ -6,8 +6,15 @@ namespace SocialMediaLists.Sample.Data.Common
 {
     public sealed class DataSeedCollection
     {
-        public PostsSeedData Posts { get; private set; } = new PostsSeedData();
-        public PeopleSeedData People { get; private set; } = new PeopleSeedData();
-        public SocialListSeedData SocialList { get; private set; } = new SocialListSeedData();
+        public PeopleSeedData People { get; private set; }
+        public SocialListSeedData SocialList { get; private set; }
+        public PostsSeedData Posts { get; private set; }
+
+        public DataSeedCollection()
+        {
+            People = new PeopleSeedData();
+            SocialList = new SocialListSeedData();
+            Posts = new PostsSeedData(People);
+        }
     }
 }
