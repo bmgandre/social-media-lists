@@ -7,6 +7,7 @@ using SocialMediaLists.Domain.Posts;
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 using TechTalk.SpecFlow;
 
 namespace SocialMediaLists.Tests.Unit.Application.Posts.Queries
@@ -48,7 +49,7 @@ namespace SocialMediaLists.Tests.Unit.Application.Posts.Queries
         }
 
         [When(@"I search the posts")]
-        public async void when_i_search_the_posts()
+        public async Task when_i_search_the_posts()
         {
             try
             {

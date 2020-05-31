@@ -6,6 +6,7 @@ using SocialMediaLists.Persistence.ElasticSearch.Posts.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 using TechTalk.SpecFlow;
 
 namespace SocialMediaLists.Tests.Unit.Persistence.ElasticSearch.Posts.Repositories
@@ -48,7 +49,7 @@ namespace SocialMediaLists.Tests.Unit.Persistence.ElasticSearch.Posts.Repositori
 
         [When(@"I search the posts")]
         [Scope(Tag = "Persistence.ElasticSearch")]
-        public async void when_i_search_the_posts()
+        public async Task when_i_search_the_posts()
         {
             try
             {
