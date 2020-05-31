@@ -23,8 +23,8 @@ namespace SocialMediaLists.Tests.Unit.Application.People.Validators
         public async Task Should_not_find_a_unregisted_person_by_id(long id)
         {
             var mockRepository = new Mock<IReadPeopleRepository>();
-            mockRepository.Setup(x => x.FindAsync(It.IsAny<CancellationToken>(), It.IsAny<object[]>()))
-                .Returns<CancellationToken, object[]>((c, o) =>
+            mockRepository.Setup(x => x.FindAsync(It.IsAny<object[]>(), It.IsAny<CancellationToken>()))
+                .Returns<object[], CancellationToken>((o, c) =>
                 {
                     return Task.FromResult(PeopleData.GetSeedData().FirstOrDefault(x => x.PersonId == (long)o[0]));
                 });

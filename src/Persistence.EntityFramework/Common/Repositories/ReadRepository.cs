@@ -18,9 +18,9 @@ namespace SocialMediaLists.Persistence.EntityFramework.Common.Repositories
             _dbContext = dbContext;
         }
 
-        public virtual async Task<T> FindAsync(CancellationToken cancellationToken, params object[] keys)
+        public virtual async Task<T> FindAsync(object[] keys, CancellationToken cancellationToken)
         {
-            var entity = await _dbContext.Set<T>().FindAsync(cancellationToken, keys);
+            var entity = await _dbContext.Set<T>().FindAsync(keys, cancellationToken);
             return entity;
         }
 
@@ -29,6 +29,28 @@ namespace SocialMediaLists.Persistence.EntityFramework.Common.Repositories
         {
             return await specification.Prepare(_dbContext.Set<T>().AsQueryable())
                 .ToListAsync(cancellationToken);
+        }
+
+        public virtual async Task<IEnumerable<T>> SearchAsync<T1Property>(ISpecification<T> specification,
+            Expression<Func<T, T1Property>> path1,
+            CancellationToken cancellationToken)
+        {
+            var queryable = specification.Prepare(_dbContext.Set<T>().AsQueryable())
+                .Include(path1);
+            return await queryable.ToListAsync(cancellationToken);
+        }
+
+        public virtual IQueryable<T> Where<T1Property>(Expression<Func<T, bool>> predicate,
+            Expression<Func<T, T1Property>> path1)
+        {
+            var queryable = _dbContext.Set<T>().AsQueryable().Include(path1);
+            return queryable.Where(predicate);
+        }
+
+        public virtual IQueryable<T> Where<T1Property>(ISpecification<T> specification,
+            Expression<Func<T, T1Property>> path1)
+        {
+            return Where(specification.Predicate, path1);
         }
 
         public virtual IQueryable<T> Where<T1Property, T2Property>(Expression<Func<T, bool>> predicate,

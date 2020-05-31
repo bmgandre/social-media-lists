@@ -32,13 +32,16 @@ namespace SocialMediaLists.Application.People.Validators
 
                 RuleFor(personFindModel => personFindModel.PersonId)
                     .NotNull()
-                    .GreaterThanOrEqualTo(1)
-                    .MustAsync(BeAValidIdAsync);
+                    .GreaterThanOrEqualTo(1);
+
+                RuleFor(personFindModel => personFindModel.PersonId)
+                    .MustAsync(BeAValidIdAsync)
+                    .WithMessage("Invalid Id");
             }
 
             private async Task<bool> BeAValidIdAsync(long id, CancellationToken cancellationToken)
             {
-                var person = await _readPeopleRepository.FindAsync(cancellationToken, id);
+                var person = await _readPeopleRepository.FindAsync(new object[] { id }, cancellationToken);
                 return person != null;
             }
         }
