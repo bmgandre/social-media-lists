@@ -55,17 +55,30 @@ namespace SocialMediaLists.Application.Posts.Validators
                 When(post => post.Lists?.Count(x => !string.IsNullOrWhiteSpace(x)) > 0, () =>
                 {
                     RuleForEach(post => post.Lists)
-                        .MustAsync(BeAValidListAsync)
+                        .MustAsync(BeAExistingListAsync)
                         .WithMessage("Invalid list");
+
+                    RuleForEach(post => post.Lists)
+                        .MustAsync(BeANonEmptyListAsync)
+                        .WithMessage("List is empty");
                 });
             }
 
-            private async Task<bool> BeAValidListAsync(string listName, CancellationToken cancellationToken)
+            private async Task<bool> BeAExistingListAsync(string listName, CancellationToken cancellationToken)
             {
                 var specification = SpecificationBuilder<SocialList>.Create()
                     .WithName(listName);
                 var exists = await _readSocialListsRepository.ExistsAsync(specification, cancellationToken);
                 return exists;
+            }
+
+            private async Task<bool> BeANonEmptyListAsync(string listName, CancellationToken cancellationToken)
+            {
+                var specification = SpecificationBuilder<SocialList>.Create()
+                    .WithName(listName)
+                    .HasPeople();
+                var isNonEmpty = await _readSocialListsRepository.ExistsAsync(specification, cancellationToken);
+                return isNonEmpty;
             }
         }
     }

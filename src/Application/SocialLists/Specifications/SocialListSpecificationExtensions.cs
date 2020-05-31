@@ -16,5 +16,10 @@ namespace SocialMediaLists.Application.SocialLists.Specifications
         {
             return specification.And(x => x.Name == name);
         }
+
+        public static ISpecification<SocialList> HasPeople(this ISpecification<SocialList> specification)
+        {
+            return specification.And(x => x.SocialListPerson.Count > 0);
+        }
     }
 }

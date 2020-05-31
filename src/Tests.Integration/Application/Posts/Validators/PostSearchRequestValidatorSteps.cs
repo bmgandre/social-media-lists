@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore;
 using SocialMediaLists.Application.Contracts.Common.Validators;
 using SocialMediaLists.Application.Contracts.Posts.Models;
 using SocialMediaLists.Application.Posts.Validators;
+using SocialMediaLists.Domain.People;
 using SocialMediaLists.Domain.SocialLists;
 using SocialMediaLists.Persistence.EntityFramework.SocialLists.Repositories;
 using SocialMediaLists.Tests.Integration.Persistence.EntityFramework.Common.Database;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -43,9 +45,45 @@ namespace SocialMediaLists.Tests.Integration.Application.Posts.Validators
         public async Task given_the_following_lists_are_registered(Table table)
         {
             var socialListBackground = table.CreateSet<SocialList>();
-            await _dbContext.AddRangeAsync(socialListBackground);
+            var socialLists = socialListBackground.Select(list =>
+            {
+                list.SocialListPerson = new List<SocialListPerson>
+                {
+                    new SocialListPerson
+                    {
+                        People = new Person { Name = "Sample" }
+                    }
+                };
+
+                return list;
+            });
+            await _dbContext.AddRangeAsync(socialLists);
             await _dbContext.SaveChangesAsync();
         }
+
+        [Given(@"the following lists are registered with some members")]
+        public async Task given_the_following_lists_are_registered_with_some_members(Table table)
+        {
+            var socialLists = table.Rows.Select(entry =>
+            {
+                return new SocialList
+                {
+                    Name = entry[0],
+                    SocialListPerson = Enumerable
+                        .Range(0, int.Parse(entry[1]))
+                        .Select(item => 
+                        {
+                            return new SocialListPerson
+                            {
+                                People = new Person { Name = $"Person {item}" }
+                            };
+                        }).ToList()
+                };
+            });
+            await _dbContext.AddRangeAsync(socialLists);
+            await _dbContext.SaveChangesAsync();
+        }
+
 
         [Given(@"a search post request to validate")]
         public void given_a_search_post_request_to_validate()
