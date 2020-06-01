@@ -53,7 +53,7 @@ namespace SocialMediaLists.Tests.Unit.Application.Posts.Validators
         [Given(@"the post filter text is '(.*)'")]
         public void given_the_post_filter_text_is(string text)
         {
-            _postFilter.Text = text;
+            _postFilter.Content = text;
         }
 
         [Given(@"the post network filter is '(.*)'")]

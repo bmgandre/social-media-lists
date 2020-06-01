@@ -89,7 +89,7 @@ namespace SocialMediaLists.Sample.ConsoleApplication
                     Begin = DateTime.Now.Subtract(TimeSpan.FromDays(365)),
                     End = DateTime.Now
                 },
-                Text = queryTerm,
+                Content = queryTerm,
                 Network = network,
                 Page = new PageModel
                 {

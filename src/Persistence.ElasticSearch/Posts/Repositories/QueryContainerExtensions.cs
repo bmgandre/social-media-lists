@@ -9,7 +9,7 @@ namespace SocialMediaLists.Persistence.ElasticSearch.Posts.Repositories
     {
         public static QueryContainer CreateQuery(this PostFilter filter)
         {
-            return new QueryContainer()
+            return Query<Post>.MatchAll()
                 .AddTextualFilterIfNotEmpty(filter)
                 .AddNetworkIfNotEmpty(filter)
                 .AddAuthorsIfNotEmpty(filter)

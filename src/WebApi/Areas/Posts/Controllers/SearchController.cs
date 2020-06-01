@@ -28,10 +28,11 @@ namespace SocialMediaLists.WebApi.Areas.Posts.Controllers
         [ProducesResponseType(typeof(IEnumerable<PostSearchResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(IValidationResult), StatusCodes.Status400BadRequest)]
         [TypeFilter(typeof(ValidationExceptionFilter))]
-        public Task<IEnumerable<PostSearchResponse>> SearchAsync([FromQuery] PostSearchRequest request,
+        public async Task<IEnumerable<PostSearchResponse>> SearchAsync([FromQuery] PostSearchRequest request,
             CancellationToken cancellationToken)
         {
-            return _postQuery.SearchAsync(request, cancellationToken);
+            var result  = await _postQuery.SearchAsync(request, cancellationToken);
+            return result;
         }
     }
 }

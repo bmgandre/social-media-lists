@@ -24,7 +24,9 @@ namespace SocialMediaLists.WebApi
             {
                 var pool = provider.GetService<IConnectionPool>();
                 var connectionSettings = new ConnectionSettings(pool)
-                    .DefaultIndex(nameof(SocialMediaLists).ToLower());
+                    .PrettyJson()
+                    .DefaultIndex(nameof(SocialMediaLists).ToLower())
+                    .DisableDirectStreaming();
                 return connectionSettings;
             });
             services.AddScoped<IElasticClient, ElasticClient>();

@@ -46,7 +46,7 @@ namespace SocialMediaLists.Application.Posts.Queries
         {
             return new PostFilter
             {
-                Text = request.Text,
+                Text = request.Content,
                 Authors = request.AccountNames,
                 Lists = request.Lists,
                 Network = request.Network,

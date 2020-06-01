@@ -1,0 +1,69 @@
+<h1 id="tableLabel">Posts</h1>
+
+<p>This component demonstrates fetching data from the server.</p>
+
+<hr>
+
+<form (ngSubmit)="onSubmit()" #searchForm="ngForm">
+  <div class="form-group">
+    <label for="content">Content</label>
+    <input type="text" class="form-control" id="content" [(ngModel)]="postSearchRequest.content" name="content" #name="ngModel">
+  </div>
+
+  <div class="form-group">
+    <label for="network">Network</label>
+    <input type="text" class="form-control" id="network" [(ngModel)]="postSearchRequest.network" name="network" #name="ngModel">
+  </div>
+
+  <div class="form-group">
+    <label for="network">Lists</label>
+    <input type="text" class="form-control" id="lists" [(ngModel)]="postSearchRequest.lists" name="lists" #name="ngModel">
+  </div>
+
+  <div class="form-group">
+    <label for="date-begin">Date begin</label>
+    <input type="text" class="form-control" id="date-begin" [(ngModel)]="postSearchRequest.dateRange.begin" name="date-begin" #name="ngModel">
+  </div>
+
+  <div class="form-group">
+    <label for="date-begin">Date end</label>
+    <input type="text" class="form-control" id="date-end" [(ngModel)]="postSearchRequest.dateRange.end" name="date-end" #name="ngModel">
+  </div>
+
+  <div class="form-group">
+    <label for="page-start">Page start</label>
+    <input type="text" class="form-control" id="page-start" [(ngModel)]="postSearchRequest.page.from" name="page-start" #name="ngModel">
+  </div>
+
+  <div class="form-group">
+    <label for="page-size">Page size</label>
+    <input type="text" class="form-control" id="page-size" [(ngModel)]="postSearchRequest.page.size" name="page-size" #name="ngModel">
+  </div>
+
+  <button type="submit" class="btn btn-success" [disabled]="!searchForm.form.valid">Search</button>
+</form>
+
+<hr>
+
+<table class='table table-striped' aria-labelledby="tableLabel">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Network</th>
+      <th>Link</th>
+      <th>Content</th>
+      <th>Author</th>
+      <th>Lists</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let post of postSearchResponse$ | async">
+      <td>{{ post?.date }}</td>
+      <td>{{ post?.network }}</td>
+      <td>{{ post?.link }}</td>
+      <td>{{ post?.content }}</td>
+      <td>{{ post?.account }}</td>
+      <td>{{ post?.lists }}</td>
+    </tr>
+  </tbody>
+</table>

@@ -5,7 +5,7 @@ namespace SocialMediaLists.Application.Contracts.Posts.Models
 {
     public class PostSearchRequest
     {
-        public string Text { get; set; }
+        public string Content { get; set; }
         public string Network { get; set; }
         public IEnumerable<string> AccountNames { get; set; }
         public IEnumerable<string> Lists { get; set; }

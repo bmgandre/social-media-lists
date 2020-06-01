@@ -23,8 +23,8 @@ namespace SocialMediaLists.Persistence.ElasticSearch.Posts.Repositories
             var query = filter.CreateQuery();
             var searchRequest = new SearchRequest
             {
-                From = filter.Page?.From,
-                Size = filter.Page?.Size,
+                From = filter.Page?.From ?? 0,
+                Size = filter.Page?.Size ?? 100,
                 Query = query
             };
 
