@@ -1,4 +1,12 @@
-### BEING VisualStudioCode.gitignore
+### BEGIN SocialMediaLists
+SocialMediaLists.db
+### END SocialMediaLists
+
+### BEGIN Specflow
+*.feature.cs
+### END Specflow
+
+### BEGIN VisualStudioCode.gitignore
 
 .vscode/*
 !.vscode/settings.json

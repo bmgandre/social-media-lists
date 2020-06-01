@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <LangVersion>8.0</LangVersion>
+    <IsPackable>false</IsPackable>
+    <RootNamespace>SocialMediaLists.Tests.Integration</RootNamespace>
+    <AssemblyName>SocialMediaLists.Tests.Integration</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Application\Application.csproj" />
+    <ProjectReference Include="..\Persistence.ElasticSearch\Persistence.ElasticSearch.csproj" />
+    <ProjectReference Include="..\Persistence.EntityFramework\Persistence.EntityFramework.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
+    <PackageReference Include="SpecFlow" Version="3.3.16-beta" />
+    <PackageReference Include="SpecFlow.Tools.MsBuild.Generation" Version="3.3.16-beta" />
+    <PackageReference Include="SpecFlow.xUnit" Version="3.3.16-beta" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" />
+    <PackageReference Include="coverlet.collector" Version="1.2.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="3.1.4" />
+    <PackageReference Include="FluentAssertions" Version="5.10.3" />
+  </ItemGroup>
+
+</Project>
