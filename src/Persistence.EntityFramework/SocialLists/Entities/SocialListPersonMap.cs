@@ -15,12 +15,12 @@ namespace SocialMediaLists.Persistence.EntityFramework.SocialLists.Entities
                 });
 
             modelBuilder.Entity<SocialListPerson>()
-                .HasOne(entity => entity.SocialLists)
+                .HasOne(entity => entity.SocialList)
                 .WithMany(socialList => socialList.SocialListPerson)
                 .HasForeignKey(entity => entity.SocialListId);
 
             modelBuilder.Entity<SocialListPerson>()
-                .HasOne(entity => entity.People)
+                .HasOne(entity => entity.Person)
                 .WithMany(person => person.SocialListPerson)
                 .HasForeignKey(entity => entity.PersonId);
         }

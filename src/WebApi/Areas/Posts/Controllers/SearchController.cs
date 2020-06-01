@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SocialMediaLists.Application.Contracts.Common.Validators;
 using SocialMediaLists.Application.Contracts.Posts.Models;
@@ -23,6 +24,7 @@ namespace SocialMediaLists.WebApi.Areas.Posts.Controllers
         }
 
         [HttpGet]
+        [EnableCors("AllowOrigin")]
         [ProducesResponseType(typeof(IEnumerable<PostSearchResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(IValidationResult), StatusCodes.Status400BadRequest)]
         [TypeFilter(typeof(ValidationExceptionFilter))]

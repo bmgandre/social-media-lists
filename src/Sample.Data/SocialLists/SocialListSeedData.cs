@@ -1,7 +1,6 @@
 ﻿using SocialMediaLists.Domain.SocialLists;
 using SocialMediaLists.Sample.Data.People;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace SocialMediaLists.Sample.Data.SocialLists
 {
@@ -23,22 +22,26 @@ namespace SocialMediaLists.Sample.Data.SocialLists
             var fakerSocialListPerson = GetSocialListPersonFaker();
 
             return new Bogus.Faker<SocialList>()
-                .RuleFor(socialList => socialList.SocialListPerson, faker => fakerSocialListPerson.Generate(100))
-                .RuleFor(socialList => socialList.Name, faker => faker.Company.CompanyName());
+                .Rules((faker, socialList) =>
+                {
+                    var memberCount = faker.Random.Int(50, 500);
+                    socialList.SocialListPerson = fakerSocialListPerson.Generate(memberCount);
+                    socialList.Name = faker.Address.City();
+                });
         }
 
         private static Bogus.Faker<SocialListPerson> GetSocialListPersonFaker()
         {
             var fakerPerson = PeopleSeedData.GetPersonFaker();
             return new Bogus.Faker<SocialListPerson>()
-                .RuleFor(socialListPerson => socialListPerson.People, faker => fakerPerson);
+                .RuleFor(socialListPerson => socialListPerson.Person, faker => fakerPerson);
         }
 
         public IEnumerable<SocialList> GenerateSeedData()
         {
             var fakerSocialLists = GetSocialListFaker();
-            var result = fakerSocialLists.Generate(10);
-            _sample.AddRange(result.Take(5));
+            var result = fakerSocialLists.Generate(50);
+            _sample.AddRange(result);
 
             return result;
         }

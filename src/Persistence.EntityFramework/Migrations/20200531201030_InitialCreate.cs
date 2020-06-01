@@ -39,7 +39,7 @@ namespace SocialMediaLists.Persistence.EntityFramework.Migrations
                     SocialAccountId = table.Column<long>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Network = table.Column<string>(nullable: true),
-                    AccoutName = table.Column<string>(nullable: true),
+                    AccountName = table.Column<string>(nullable: true),
                     PersonId = table.Column<long>(nullable: false)
                 },
                 constraints: table =>

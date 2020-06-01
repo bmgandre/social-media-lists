@@ -3,6 +3,6 @@
     public class SocialAccountModel
     {
         public string Network { get; set; }
-        public string AccoutName { get; set; }
+        public string AccountName { get; set; }
     }
 }

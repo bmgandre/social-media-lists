@@ -27,7 +27,7 @@ namespace SocialMediaLists.Application.SocialLists.Queries
 
             var result = await _readSocialListsRepository.SearchAsync(specification,
                 list => list.SocialListPerson,
-                sp => sp.People,
+                sp => sp.Person,
                 cancellationToken);
             var socialList = result.First();
 
@@ -39,7 +39,7 @@ namespace SocialMediaLists.Application.SocialLists.Queries
                    return new PersonModel
                    {
                        Id = x.PersonId,
-                       Name = x.People.Name
+                       Name = x.Person.Name
                    };
                })
             };

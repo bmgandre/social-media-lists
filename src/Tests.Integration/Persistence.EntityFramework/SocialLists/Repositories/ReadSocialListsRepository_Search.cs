@@ -39,22 +39,22 @@ namespace SocialMediaLists.Tests.Integration.Persistence.EntityFramework.SocialL
                 new Person
                 {
                     Name = "John",
-                    Accounts = new List<SocialAccount> { new SocialAccount { AccoutName = "johnlennon", Network= "twitter", PersonId = 1 } }
+                    Accounts = new List<SocialAccount> { new SocialAccount { AccountName = "johnlennon", Network= "twitter", PersonId = 1 } }
                 },
                 new Person
                 {
                     Name = "Paul",
-                    Accounts = new List<SocialAccount> { new SocialAccount { AccoutName = "paulmccartney", Network= "twitter", PersonId = 2 } }
+                    Accounts = new List<SocialAccount> { new SocialAccount { AccountName = "paulmccartney", Network= "twitter", PersonId = 2 } }
                 },
                 new Person
                 {
                     Name = "George",
-                    Accounts = new List<SocialAccount> { new SocialAccount { AccoutName = "georgeharrison", Network= "twitter", PersonId = 3 } }
+                    Accounts = new List<SocialAccount> { new SocialAccount { AccountName = "georgeharrison", Network= "twitter", PersonId = 3 } }
                 },
                 new Person
                 {
                     Name = "Ringo",
-                    Accounts = new List<SocialAccount> { new SocialAccount{ AccoutName = "ringostar", Network= "twitter", PersonId = 4 } }
+                    Accounts = new List<SocialAccount> { new SocialAccount{ AccountName = "ringostar", Network= "twitter", PersonId = 4 } }
                 }
             };
             var list1 = new SocialList { Name = "The Beatles" };
@@ -62,10 +62,10 @@ namespace SocialMediaLists.Tests.Integration.Persistence.EntityFramework.SocialL
             var data = people1
                 .Select(x => new SocialListPerson
                 {
-                    People = x,
-                    SocialLists = list1
+                    Person = x,
+                    SocialList = list1
                 })
-                .Concat(new List<SocialListPerson> { new SocialListPerson { People = people1[1], SocialLists = list2 } })
+                .Concat(new List<SocialListPerson> { new SocialListPerson { Person = people1[1], SocialList = list2 } })
                 .ToList();
             return data;
         }
@@ -79,7 +79,7 @@ namespace SocialMediaLists.Tests.Integration.Persistence.EntityFramework.SocialL
             var specification = SpecificationBuilder<SocialList>.Create()
                     .WithName(name);
 
-            var result = await peopleRepository.Where(specification, x => x.SocialListPerson, y => y.People)
+            var result = await peopleRepository.Where(specification, x => x.SocialListPerson, y => y.Person)
                 .ToListAsync(CancellationToken.None);
 
             result.Should().HaveCount(1);
