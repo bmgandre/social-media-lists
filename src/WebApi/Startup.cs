@@ -18,6 +18,14 @@ namespace SocialMediaLists.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddCors(c =>
+            {
+                c.AddPolicy("AllowOrigin", options => 
+                    options
+                    .AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader());
+            });
             ConfigureSwaggerServices(services);
             ConfigureEntityFrameworkServices(services);
             ConfigureElasticSearchServices(services);
@@ -37,9 +45,8 @@ namespace SocialMediaLists.WebApi
             }
 
             app.UseRouting();
-
+            app.UseCors();
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapAreaControllerRoute("Domain", "Domain", "{area:exists}/{controller=Admin}/{action=Index}/{id?}");
