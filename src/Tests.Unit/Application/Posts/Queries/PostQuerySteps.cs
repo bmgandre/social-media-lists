@@ -1,16 +1,12 @@
 ﻿using Moq;
-using SocialMediaLists.Application.Contracts.Common.Data;
 using SocialMediaLists.Application.Contracts.Posts.Models;
 using SocialMediaLists.Application.Contracts.Posts.Repositories;
 using SocialMediaLists.Application.Contracts.Posts.Validators;
 using SocialMediaLists.Application.Contracts.SocialLists.Repositories;
 using SocialMediaLists.Application.Posts.Queries;
-using SocialMediaLists.Domain.People;
 using SocialMediaLists.Domain.Posts;
-using SocialMediaLists.Domain.SocialLists;
 using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using TechTalk.SpecFlow;
@@ -84,20 +80,6 @@ namespace SocialMediaLists.Tests.Unit.Application.Posts.Queries
             _postFilterValidator.Verify(mock =>
                 mock.ValidateAndThrowAsync(
                     It.IsAny<PostSearchRequest>(),
-                    It.IsAny<CancellationToken>()
-                    ), Times.Once());
-        }
-
-        [Then(@"the social lists repository should be reached")]
-        public void then_the_social_lists_repository_should_be_reached()
-        {
-            _readSocialListRepository.Verify(mock =>
-                mock.SearchAndProjectAsync(
-                    It.IsAny<ISpecification<SocialList>>(),
-                    It.IsAny<Expression<Func<SocialList, IEnumerable<SocialListPerson>>>>(),
-                    It.IsAny<Expression<Func<SocialListPerson, Person>>>(),
-                    It.IsAny<Expression<Func<Person, ICollection<SocialAccount>>>>(),
-                    It.IsAny<Expression<Func<SocialList, IEnumerable<SocialAccount>>>>(),
                     It.IsAny<CancellationToken>()
                     ), Times.Once());
         }

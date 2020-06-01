@@ -5,6 +5,7 @@ using SocialMediaLists.Application.Contracts.Posts.Models;
 using SocialMediaLists.Application.Posts.Validators;
 using SocialMediaLists.Domain.People;
 using SocialMediaLists.Domain.SocialLists;
+using SocialMediaLists.Persistence.EntityFramework.People.Repositories;
 using SocialMediaLists.Persistence.EntityFramework.SocialLists.Repositories;
 using SocialMediaLists.Tests.Integration.Persistence.EntityFramework.Common.Database;
 using System;
@@ -31,8 +32,10 @@ namespace SocialMediaLists.Tests.Integration.Application.Posts.Validators
             _dbContext = _mockDbContext.DbContext;
             _scenarioContext = scenarioContext;
 
-            var repository = new ReadSocialListsRepository(_dbContext);
-            _postFilterValidator = new PostSearchRequestValidator(repository);
+            var readSocialListsRepository = new ReadSocialListsRepository(_dbContext);
+            var readPeopleRepository = new ReadPeopleRepository(_dbContext);
+
+            _postFilterValidator = new PostSearchRequestValidator(readSocialListsRepository, readPeopleRepository);
         }
 
         public void Dispose()

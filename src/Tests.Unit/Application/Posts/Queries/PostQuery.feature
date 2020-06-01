@@ -20,4 +20,3 @@ Scenario: Search posts with lists in the filter
         When I search the posts
         Then the post repository should be reached
         And the post filter validator should be reached
-        And the social lists repository should be reached

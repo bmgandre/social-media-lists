@@ -1,6 +1,6 @@
 ﻿using Bogus;
 using SocialMediaLists.Domain.Posts;
-using SocialMediaLists.Sample.Data.People;
+using SocialMediaLists.Sample.Data.SocialLists;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,12 +8,12 @@ namespace SocialMediaLists.Sample.Data.Posts
 {
     public class PostsSeedData
     {
-        private readonly PeopleSeedData _peopleSeedData;
+        private readonly SocialListSeedData _socialListSeedData;
         private readonly List<Post> _sample = new List<Post>();
 
-        public PostsSeedData(PeopleSeedData peopleSeedData)
+        public PostsSeedData(SocialListSeedData socialListSeedData)
         {
-            _peopleSeedData = peopleSeedData;
+            _socialListSeedData = socialListSeedData;
         }
 
         public IReadOnlyCollection<Post> GetSample()
@@ -27,19 +27,22 @@ namespace SocialMediaLists.Sample.Data.Posts
 
         private Bogus.Faker<Post> GetPostFaker()
         {
-            var peopleData = _peopleSeedData.GetSample().ToList();
+            var socialListData = _socialListSeedData.GetSample().ToList();
             var networks = new[] { "facebook", "twitter" };
 
             return new Bogus.Faker<Post>()
                 .Rules((faker, post) =>
                 {
+                    var socialList = faker.PickRandom(socialListData);
+                    var socialListPerson = faker.PickRandom(socialList.SocialListPerson);
+                    var account = faker.PickRandom(socialListPerson.Person.Accounts);
+
                     post.Date = faker.Date.RecentOffset(180).DateTime;
                     post.Content = faker.WaffleText(1, false);
-                    var person = faker.PickRandom(peopleData);
-                    var account = faker.PickRandom(person.Accounts);
                     post.Network = account.Network;
                     post.Link = $"https://{account.Network}.com/{account.AccountName}/{faker.Random.AlphaNumeric(20)}";
                     post.Author = account.AccountName;
+                    post.Lists = new string[] { socialList.Name };
                 });
         }
 

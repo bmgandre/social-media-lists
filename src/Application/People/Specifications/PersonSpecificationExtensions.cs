@@ -1,5 +1,6 @@
 ﻿using SocialMediaLists.Application.Contracts.Common.Data;
 using SocialMediaLists.Domain.People;
+using System.Linq;
 
 namespace SocialMediaLists.Application.People.Specifications
 {
@@ -13,6 +14,11 @@ namespace SocialMediaLists.Application.People.Specifications
         public static ISpecification<Person> WithName(this ISpecification<Person> specification, string name)
         {
             return specification.And(x => x.Name == name);
+        }
+
+        public static ISpecification<Person> WithAccountName(this ISpecification<Person> specification, string accountName)
+        {
+            return specification.And(x => x.Accounts.Any(account => account.AccountName == accountName));
         }
     }
 }

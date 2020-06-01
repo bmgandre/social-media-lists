@@ -9,9 +9,11 @@ using SocialMediaLists.Application.Posts.Validators;
 using SocialMediaLists.Persistence.ElasticSearch.Common.Database;
 using SocialMediaLists.Persistence.ElasticSearch.Posts.Repositories;
 using SocialMediaLists.Persistence.EntityFramework.Common.Database;
+using SocialMediaLists.Persistence.EntityFramework.People.Repositories;
 using SocialMediaLists.Persistence.EntityFramework.SocialLists.Repositories;
 using SocialMediaLists.Sample.ConsoleApplication.Data;
 using SocialMediaLists.Sample.ConsoleApplication.Logging;
+using SocialMediaLists.Sample.ConsoleApplication.Models;
 using SocialMediaLists.Sample.Data.Common;
 using SocialMediaLists.Sample.Data.Database;
 using System;
@@ -101,7 +103,8 @@ namespace SocialMediaLists.Sample.ConsoleApplication
             IElasticClient elasticClient)
         {
             var readSocialListsRepository = new ReadSocialListsRepository(dbContext);
-            var postSearchValidator = new PostSearchRequestValidator(readSocialListsRepository);
+            var readPeopleRepository = new ReadPeopleRepository(dbContext);
+            var postSearchValidator = new PostSearchRequestValidator(readSocialListsRepository, readPeopleRepository);
             var postRepository = new ReadPostRepository(elasticClient);
 
             var postQuery = new PostQuery(postRepository, readSocialListsRepository, postSearchValidator);
@@ -112,6 +115,7 @@ namespace SocialMediaLists.Sample.ConsoleApplication
         private static void PrintPostSearchResponse(string queryTerm,
             IEnumerable<PostSearchResponse> responses)
         {
+            Console.WriteLine();
             Console.WriteLine($"Searching for: {queryTerm}");
             Console.WriteLine();
 
@@ -123,19 +127,27 @@ namespace SocialMediaLists.Sample.ConsoleApplication
             Console.WriteLine($"Results: {responses.Count()}");
         }
 
-        private static IEnumerable<PostSearchResponse> ReduceTextContent(IEnumerable<PostSearchResponse> postSearchResponse,
+        private static IEnumerable<FlatPostSearchResponseModel> ReduceTextContent(IEnumerable<PostSearchResponse> postSearchResponse,
             string queryTerm)
         {
             var result = postSearchResponse.Select(response =>
             {
                 var tokenIndex = response.Content.IndexOf(queryTerm);
                 var startIndex = tokenIndex - 15 > 0 ? tokenIndex - 15 : 0;
-                response.Content = response.Content.Substring(startIndex, 35);
+                var reducedContent = response.Content.Substring(startIndex, 35);
 
-                var responseLink = response.Link.Replace("https://", string.Empty);
-                response.Link = responseLink.Length > 35 ? $"{responseLink.Substring(0, 32)}..." : responseLink;
+                var linkWithoutProtocol = response.Link.Replace("https://", string.Empty);
+                var reducedLink = linkWithoutProtocol.Length > 35 ? $"{linkWithoutProtocol.Substring(0, 32)}..." : linkWithoutProtocol;
 
-                return response;
+                return new FlatPostSearchResponseModel
+                {
+                    Date = response.Date,
+                    Network = response.Network,
+                    Link = reducedLink,
+                    Content = reducedContent,
+                    Account = response.Account,
+                    Lists = string.Join(",", response.Lists)
+                };
             });
 
             return result;

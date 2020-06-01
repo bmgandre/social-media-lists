@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace SocialMediaLists.Domain.Posts
 {
@@ -10,5 +11,6 @@ namespace SocialMediaLists.Domain.Posts
         public string Link { get; set; }
         public string Author { get; set; }
         public string Content { get; set; }
+        public IEnumerable<string> Lists { get; set; }
     }
 }

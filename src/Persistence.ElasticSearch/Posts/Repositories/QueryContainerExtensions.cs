@@ -13,6 +13,7 @@ namespace SocialMediaLists.Persistence.ElasticSearch.Posts.Repositories
                 .AddTextualFilterIfNotEmpty(filter)
                 .AddNetworkIfNotEmpty(filter)
                 .AddAuthorsIfNotEmpty(filter)
+                .AddListsIfNotEmpty(filter)
                 .AddDateIfAvailable(filter);
         }
 
@@ -41,6 +42,16 @@ namespace SocialMediaLists.Persistence.ElasticSearch.Posts.Repositories
             if (postFilter.Authors != null && postFilter.Authors.Count() > 0)
             {
                 return query && Query<Post>.Terms(t => t.Field(f => f.Author).Terms(postFilter.Authors));
+            }
+
+            return query;
+        }
+
+        private static QueryContainer AddListsIfNotEmpty(this QueryContainer query, PostFilter postFilter)
+        {
+            if (postFilter.Authors != null && postFilter.Authors.Count() > 0)
+            {
+                return query && Query<Post>.Terms(t => t.Field(f => f.Lists).Terms(postFilter.Lists));
             }
 
             return query;

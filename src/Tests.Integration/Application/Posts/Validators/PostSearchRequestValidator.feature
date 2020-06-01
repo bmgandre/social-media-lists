@@ -32,25 +32,3 @@ Scenario Outline: Post search validation should check if a list exists
 		| Rock    | Pop    | Country |              |
 		| Unknown |        |         | Invalid list |
 		| Unknown | Rock   |         | Invalid list |
-
-Scenario Outline: Post search validation should check if a list contains members
-	Given the following lists are registered with some members
-	| Name    | Members |
-	| Rock    | 1       |
-	| Pop     | 2       |
-	| Country | 0       |
-	And a search post request to validate
-	And the post list filter contains
-	| Name     |
-	| <List 1> |
-	| <List 2> |
-	| <List 3> |
-	When the request to search posts with the specified filter is checked
-	Then the post filter validation should give the error '<Error>'
-	
-	Examples:
-		| List 1  | List 2 | List 3  | Error         |
-		|         |        |         |               |
-		| Rock    | Pop    |         |               |
-		| Rock    | Pop    | Country | List is Empty |
-		| Country |        |         | List is Empty |

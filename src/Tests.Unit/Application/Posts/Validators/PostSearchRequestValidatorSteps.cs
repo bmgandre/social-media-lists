@@ -3,6 +3,7 @@ using Moq;
 using SocialMediaLists.Application.Contracts.Common.Data;
 using SocialMediaLists.Application.Contracts.Common.Models;
 using SocialMediaLists.Application.Contracts.Common.Validators;
+using SocialMediaLists.Application.Contracts.People.Repositories;
 using SocialMediaLists.Application.Contracts.Posts.Models;
 using SocialMediaLists.Application.Contracts.SocialLists.Repositories;
 using SocialMediaLists.Application.Posts.Validators;
@@ -28,11 +29,13 @@ namespace SocialMediaLists.Tests.Unit.Application.Posts.Validators
         {
             _scenarioContext = scenarioContext;
 
-            var mockRepository = new Mock<IReadSocialListsRepository>();
-            mockRepository.Setup(x => x.ExistsAsync(It.IsAny<ISpecification<SocialList>>(), It.IsAny<CancellationToken>()))
+            var mockReadSocialListsRepository = new Mock<IReadSocialListsRepository>();
+            mockReadSocialListsRepository.Setup(x => x.ExistsAsync(It.IsAny<ISpecification<SocialList>>(), It.IsAny<CancellationToken>()))
                 .Returns(() => Task.FromResult(_postFilter.Lists.All(x => _socialListBackground.Contains(x))));
 
-            _postFilterValidator = new PostSearchRequestValidator(mockRepository.Object);
+            var mockReadPeopleRepository = new Mock<IReadPeopleRepository>();
+
+            _postFilterValidator = new PostSearchRequestValidator(mockReadSocialListsRepository.Object, mockReadPeopleRepository.Object);
         }
 
         [Given(@"the following lists are registered")]

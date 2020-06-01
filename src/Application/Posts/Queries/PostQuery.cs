@@ -1,11 +1,8 @@
-using SocialMediaLists.Application.Common.Data;
 using SocialMediaLists.Application.Contracts.Posts.Models;
 using SocialMediaLists.Application.Contracts.Posts.Queries;
 using SocialMediaLists.Application.Contracts.Posts.Repositories;
 using SocialMediaLists.Application.Contracts.Posts.Validators;
 using SocialMediaLists.Application.Contracts.SocialLists.Repositories;
-using SocialMediaLists.Application.SocialLists.Specifications;
-using SocialMediaLists.Domain.SocialLists;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -32,54 +29,30 @@ namespace SocialMediaLists.Application.Posts.Queries
             CancellationToken cancellationToken)
         {
             await _postFilterValidator.ValidateAndThrowAsync(request, cancellationToken);
-            var filter = await CreatePostFilterAsync(request, cancellationToken);
+            var filter = CreatePostFilter(request);
             var result = await _readPostRepository.SearchAsync(filter, cancellationToken);
             return result.Select(x => new PostSearchResponse
             {
                 Date = x.Date,
                 Content = x.Content,
                 Link = x.Link,
-                Network = x.Network
+                Network = x.Network,
+                Account = x.Author,
+                Lists = x.Lists,
             });
         }
 
-        private async Task<PostFilter> CreatePostFilterAsync(PostSearchRequest request,
-            CancellationToken cancellationToken)
+        private PostFilter CreatePostFilter(PostSearchRequest request)
         {
-            var authors = await LoadAuthorsAsync(request, cancellationToken);
-
             return new PostFilter
             {
                 Text = request.Text,
-                Authors = authors,
+                Authors = request.AccountNames,
+                Lists = request.Lists,
                 Network = request.Network,
                 DateRange = request.DateRange,
                 Page = request.Page
             };
-        }
-
-        private async Task<IEnumerable<string>> LoadAuthorsAsync(PostSearchRequest request,
-            CancellationToken cancellationToken)
-        {
-            var authors = new List<string>();
-
-            if (request.Lists != null && request.Lists.Any())
-            {
-                var specification = SpecificationBuilder<SocialList>.Create()
-                    .WithNames(request.Lists);
-
-                var accounts = await _readSocialListsRepository.SearchAndProjectAsync(specification,
-                    s => s.SocialListPerson,
-                    sp => sp.Person,
-                    a => a.Accounts,
-                    s => s.SocialListPerson.SelectMany(list => list.Person.Accounts),
-                    cancellationToken);
-
-                var loaded = accounts.Select(account => account.AccountName);
-                authors.AddRange(loaded);
-            }
-
-            return authors;
         }
     }
 }

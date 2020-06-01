@@ -1,10 +1,13 @@
 ﻿using FluentValidation;
 using SocialMediaLists.Application.Common.Data;
 using SocialMediaLists.Application.Common.Validators;
+using SocialMediaLists.Application.Contracts.People.Repositories;
 using SocialMediaLists.Application.Contracts.Posts.Models;
 using SocialMediaLists.Application.Contracts.Posts.Validators;
 using SocialMediaLists.Application.Contracts.SocialLists.Repositories;
+using SocialMediaLists.Application.People.Specifications;
 using SocialMediaLists.Application.SocialLists.Specifications;
+using SocialMediaLists.Domain.People;
 using SocialMediaLists.Domain.SocialLists;
 using System.Linq;
 using System.Threading;
@@ -21,9 +24,10 @@ namespace SocialMediaLists.Application.Posts.Validators
 
         private readonly FluentPostFilterValidator _validator;
 
-        public PostSearchRequestValidator(IReadSocialListsRepository readSocialListsRepository)
+        public PostSearchRequestValidator(IReadSocialListsRepository readSocialListsRepository,
+            IReadPeopleRepository readPeopleRepository)
         {
-            _validator = new FluentPostFilterValidator(readSocialListsRepository);
+            _validator = new FluentPostFilterValidator(readSocialListsRepository, readPeopleRepository);
         }
 
         public async Task ValidateAndThrowAsync(PostSearchRequest entity, CancellationToken cancellationToken)
@@ -33,11 +37,14 @@ namespace SocialMediaLists.Application.Posts.Validators
 
         private class FluentPostFilterValidator : AbstractValidator<PostSearchRequest>
         {
+            private readonly IReadPeopleRepository _readPeopleRepository;
             private readonly IReadSocialListsRepository _readSocialListsRepository;
 
-            public FluentPostFilterValidator(IReadSocialListsRepository readSocialListsRepository)
+            public FluentPostFilterValidator(IReadSocialListsRepository readSocialListsRepository,
+                IReadPeopleRepository readPeopleRepository)
             {
                 _readSocialListsRepository = readSocialListsRepository;
+                _readPeopleRepository = readPeopleRepository;
 
                 RuleFor(post => post.DateRange)
                     .SetValidator(new DateRangeValidator());
@@ -57,10 +64,13 @@ namespace SocialMediaLists.Application.Posts.Validators
                     RuleForEach(post => post.Lists)
                         .MustAsync(BeAExistingListAsync)
                         .WithMessage("Invalid list");
+                });
 
-                    RuleForEach(post => post.Lists)
-                        .MustAsync(BeANonEmptyListAsync)
-                        .WithMessage("List is empty");
+                When(post => post.AccountNames?.Count(x => !string.IsNullOrWhiteSpace(x)) > 0, () =>
+                {
+                    RuleForEach(post => post.AccountNames)
+                        .MustAsync(BeAExistingAuthorAsync)
+                        .WithMessage("Invalid account name");
                 });
             }
 
@@ -72,13 +82,12 @@ namespace SocialMediaLists.Application.Posts.Validators
                 return exists;
             }
 
-            private async Task<bool> BeANonEmptyListAsync(string listName, CancellationToken cancellationToken)
+            private async Task<bool> BeAExistingAuthorAsync(string accountName, CancellationToken cancellationToken)
             {
-                var specification = SpecificationBuilder<SocialList>.Create()
-                    .WithName(listName)
-                    .HasPeople();
-                var isNonEmpty = await _readSocialListsRepository.ExistsAsync(specification, cancellationToken);
-                return isNonEmpty;
+                var specification = SpecificationBuilder<Person>.Create()
+                    .WithAccountName(accountName);
+                var exists = await _readPeopleRepository.ExistsAsync(specification, cancellationToken);
+                return exists;
             }
         }
     }

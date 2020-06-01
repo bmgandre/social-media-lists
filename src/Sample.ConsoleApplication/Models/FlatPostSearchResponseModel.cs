@@ -1,15 +1,14 @@
-using System;
-using System.Collections.Generic;
+﻿using System;
 
-namespace SocialMediaLists.Application.Contracts.Posts.Models
+namespace SocialMediaLists.Sample.ConsoleApplication.Models
 {
-    public class PostSearchResponse
+    internal class FlatPostSearchResponseModel
     {
         public DateTime? Date { get; set; }
         public string Network { get; set; }
         public string Link { get; set; }
         public string Content { get; set; }
         public string Account { get; set; }
-        public IEnumerable<string> Lists { get; set; }
+        public string Lists { get; set; }
     }
 }

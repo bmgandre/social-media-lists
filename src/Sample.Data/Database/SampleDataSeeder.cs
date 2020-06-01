@@ -41,9 +41,6 @@ namespace SocialMediaLists.Sample.Data.Database
 
         private async Task SeedSocialListsAsync(CancellationToken cancellationToken)
         {
-            await _socialMediaListsDbContext.AddRangeAsync(_dataSeedCollection.People.GenerateSeedData(), cancellationToken);
-            await _socialMediaListsDbContext.SaveChangesAsync(cancellationToken);
-
             await _socialMediaListsDbContext.AddRangeAsync(_dataSeedCollection.SocialList.GenerateSeedData(), cancellationToken);
             await _socialMediaListsDbContext.SaveChangesAsync(cancellationToken);
         }
@@ -71,9 +68,6 @@ namespace SocialMediaLists.Sample.Data.Database
 
         private void SeedSocialLists()
         {
-            _socialMediaListsDbContext.AddRange(_dataSeedCollection.People.GenerateSeedData());
-            _socialMediaListsDbContext.SaveChanges();
-
             _socialMediaListsDbContext.AddRange(_dataSeedCollection.SocialList.GenerateSeedData());
             _socialMediaListsDbContext.SaveChanges();
         }
