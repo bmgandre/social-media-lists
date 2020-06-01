@@ -21,9 +21,9 @@
     <PackageReference Include="Moq" Version="4.14.1" />
     <PackageReference Include="NEST" Version="7.7.0" />
     <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
-    <PackageReference Include="SpecFlow" Version="3.1.97" />
-    <PackageReference Include="SpecFlow.Tools.MsBuild.Generation" Version="3.1.97" />
-    <PackageReference Include="SpecFlow.xUnit" Version="3.1.97" />
+    <PackageReference Include="SpecFlow" Version="3.3.16-beta" />
+    <PackageReference Include="SpecFlow.Tools.MsBuild.Generation" Version="3.3.16-beta" />
+    <PackageReference Include="SpecFlow.xUnit" Version="3.3.16-beta" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" />
     <PackageReference Include="coverlet.collector" Version="1.2.0" />
   </ItemGroup>
