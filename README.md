@@ -81,7 +81,7 @@ dotnet run --project WebApp
 
 If you prefer Angular CLI tools:
 ```bash
-cd src/WebApp/Client
+cd src/WebApp/ClientApp
 npm install
 export PATH=$(pwd)/node_modules/.bin:$PATH
 ng serve --watch # --watch for hot reloading
